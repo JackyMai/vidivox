@@ -45,15 +45,10 @@ public class VidivoxPlayer {
 		videoPaused = 1;
 		player.stop();
 	}
-
-	public void fastForward() {
+	
+	public void skip(int direction) {
 		videoPaused = 2;
-		skipDirection = 1;
-	}
-
-	public void rewind() {
-		videoPaused = 2;
-		skipDirection = -1;
+		skipDirection = direction;
 	}
 
 	public void playVideo() {

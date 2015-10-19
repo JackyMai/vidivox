@@ -177,7 +177,7 @@ public class VidivoxGUI extends JFrame {
 		videoFBButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setRewindStatus();
-				vp.rewind();
+				vp.skip(-1);
 			}
 		});
 		controllerPanel.add(videoFBButton);
@@ -200,7 +200,7 @@ public class VidivoxGUI extends JFrame {
 		videoFFButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setFastForwardStatus();
-				vp.fastForward();
+				vp.skip(1);
 			}
 		});
 		controllerPanel.add(videoFFButton);
