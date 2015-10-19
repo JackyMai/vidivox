@@ -70,8 +70,18 @@ public class VidivoxGUI extends JFrame {
 
 		topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-		topPanel.add(vp.getPlayerComponent(), BorderLayout.CENTER);
-
+		
+		
+		// -------------------------- Player Panel -----------------------------
+		
+		JPanel playerPanel = new JPanel();
+		playerPanel.setLayout(new BorderLayout(0,0));
+		playerPanel.add(vp.getPlayerComponent(), BorderLayout.CENTER);
+		topPanel.add(playerPanel);
+		
+		
+		// ------------------------ Progress Panel ------------------------------
+		
 		JPanel progressPanel = new JPanel();
 		progressPanel.setBackground(Color.decode("#F2F1F0"));
 		topPanel.add(progressPanel);
