@@ -115,7 +115,7 @@ public class VidivoxGUI extends JFrame {
 		controllerPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 6));
 		topPanel.add(controllerPanel);
 
-		final JButton videoOpenButton = new JButton("Add");
+		final JButton videoOpenButton = new JButton("Open");
 		final JPopupMenu openMenu = new JPopupMenu();
 
 		JMenuItem openVideoMenuItem = new JMenuItem("Video file");
@@ -230,7 +230,7 @@ public class VidivoxGUI extends JFrame {
 		});
 		controllerPanel.add(videoVolumeButton);
 
-		JButton festRemixButton = new JButton("Overlay");
+		JButton festRemixButton = new JButton("Export");
 		festRemixButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (vp.getChosenVideo() == null) {
