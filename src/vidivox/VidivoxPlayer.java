@@ -33,6 +33,7 @@ public class VidivoxPlayer {
 
 	public void play() {
 		videoPaused = 0;
+		player.mute(false);
 		player.play();
 	}
 
@@ -49,6 +50,7 @@ public class VidivoxPlayer {
 	public void skip(int direction) {
 		videoPaused = 2;
 		skipDirection = direction;
+		player.mute(true);
 	}
 
 	public void playVideo() {
