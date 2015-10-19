@@ -20,7 +20,7 @@ public class FestivalWorker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
-		String cmd = "echo \"" + message + "\" | festival --tts";
+		String cmd = "echo '" + message + "' | festival --tts";
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		builder.start();
 		

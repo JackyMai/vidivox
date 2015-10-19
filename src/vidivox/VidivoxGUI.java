@@ -46,7 +46,7 @@ public class VidivoxGUI extends JFrame {
 	private Timer progressTimer;
 	private Timer skipTimer;
 	private JPanel topPanel;
-	private JTextField festTextField;
+	private JTextField commentTextField;
 	protected JLabel playerStatusLabel;
 	protected JLabel chosenVideoLabel;
 	protected JLabel chosenAudioLabel;
@@ -246,43 +246,43 @@ public class VidivoxGUI extends JFrame {
 		});
 		controllerPanel.add(festRemixButton);
 
-		// ------------------- Festival Panel ---------------------------
+		// ------------------- Comment Panel ---------------------------
 
-		JPanel festivalPanel = new JPanel();
-		festivalPanel.setBackground(Color.decode("#F2F1F0"));
-		festivalPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
-		topPanel.add(festivalPanel);
+		JPanel commentPanel = new JPanel();
+		commentPanel.setBackground(Color.decode("#F2F1F0"));
+		commentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
+		topPanel.add(commentPanel);
 
-		JLabel festLabel = new JLabel("Festival");
-		festivalPanel.add(festLabel);
+		JLabel commentLabel = new JLabel("Festival");
+		commentPanel.add(commentLabel);
 
-		ActionListener festPlayAction = new ActionListener() {
+		ActionListener commentPlayAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldCheck()) {
-					vw.festival(festTextField.getText());
+					vw.festival(commentTextField.getText());
 				}
 			}
 		};
 
-		festTextField = new JTextField();
-		festTextField.setMaximumSize(festTextField.getPreferredSize());
-		festivalPanel.add(festTextField);
-		festTextField.setColumns(65);
-		festTextField.addActionListener(festPlayAction);
+		commentTextField = new JTextField();
+		commentTextField.setMaximumSize(commentTextField.getPreferredSize());
+		commentPanel.add(commentTextField);
+		commentTextField.setColumns(65);
+		commentTextField.addActionListener(commentPlayAction);
 
-		JButton festPlayButton = new JButton("Play");
-		festPlayButton.addActionListener(festPlayAction);
-		festivalPanel.add(festPlayButton);
+		JButton commentPlayButton = new JButton("Play");
+		commentPlayButton.addActionListener(commentPlayAction);
+		commentPanel.add(commentPlayButton);
 
-		JButton festSaveButton = new JButton("Save");
-		festSaveButton.addActionListener(new ActionListener() {
+		JButton commentSaveButton = new JButton("Save");
+		commentSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldCheck()) {
-					saveChooser("audio", festTextField.getText());
+					saveChooser("audio", commentTextField.getText());
 				}
 			}
 		});
-		festivalPanel.add(festSaveButton);
+		commentPanel.add(commentSaveButton);
 
 		// ------------------- Status Panel -----------------------------
 
@@ -424,7 +424,7 @@ public class VidivoxGUI extends JFrame {
 		 * empty string and string longer than 20 words, then displays a warning
 		 * message if either is found
 		 */
-		String message = festTextField.getText().trim();
+		String message = commentTextField.getText().trim();
 		String[] words = message.split(" ");
 
 		if (message.length() == 0) {

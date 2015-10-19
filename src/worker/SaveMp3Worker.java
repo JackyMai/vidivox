@@ -39,8 +39,8 @@ public class SaveMp3Worker extends SwingWorker<Void, Void> {
 		jd.setModal(false);
 		jd.setVisible(true);
 		
-		String save = "echo \"" + message + "\" | text2wave -o \"" + parentDir + File.separator + tempName + "\";";
-		String convert = "ffmpeg -i \"" + parentDir + File.separator + tempName + "\" \"" + outputName + "\"";
+		String save = "echo '" + message + "' | text2wave -o '" + parentDir + File.separator + tempName + "';";
+		String convert = "ffmpeg -i '" + parentDir + File.separator + tempName + "' '" + outputName + "'";
 
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", save + convert);
 		
@@ -65,6 +65,6 @@ public class SaveMp3Worker extends SwingWorker<Void, Void> {
 		
 		jd.setVisible(false);
 		
-		JOptionPane.showMessageDialog(vp.getPlayerComponent(), "Successfully saved as \"" + outputName + "\"");
+		JOptionPane.showMessageDialog(vp.getPlayerComponent(), "Successfully saved as '" + outputName + "'");
 	}
 }
