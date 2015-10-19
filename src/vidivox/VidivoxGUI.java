@@ -19,18 +19,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
 import java.awt.Color;
@@ -44,7 +40,7 @@ import javax.swing.JSeparator;
 public class VidivoxGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final JFrame mainFrame = this;
-	private VidivoxPlayer vp;
+	protected static VidivoxPlayer vp;
 	private Timer progressTimer;
 	private Timer skipTimer;
 	private JPanel topPanel;
@@ -55,8 +51,6 @@ public class VidivoxGUI extends JFrame {
 	protected JLabel progressLabel;
 	private JSlider videoSlider;
 	private JButton videoPlayButton;
-	private final FileNameExtensionFilter videoFilter;
-	private final FileNameExtensionFilter audioFilter;
 
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -68,8 +62,6 @@ public class VidivoxGUI extends JFrame {
 		setResizable(false);
 
 		vp = new VidivoxPlayer();
-		videoFilter = new FileNameExtensionFilter("Video Files (mp4, avi)", "mp4", "avi");
-		audioFilter = new FileNameExtensionFilter("MP3 Files", "mp3");
 		
 		
 		// ------------------------ Top Panel ----------------------------------
@@ -146,48 +138,16 @@ public class VidivoxGUI extends JFrame {
 		
 		openVideoMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser videoChooser = new JFileChooser();
-				videoChooser.setDialogTitle("Open video");
-				
-				videoChooser.setAcceptAllFileFilterUsed(false);
-				videoChooser.setFileFilter(videoFilter);
-				
-				int returnValue = videoChooser.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					File desiredName = videoChooser.getSelectedFile();
-					if (desiredName.exists() && desiredName != null) {
-						vp.setChosenVideo(videoChooser.getSelectedFile());
-						vp.playVideo();
-						setPlayStatus();
-					} else {
-						JOptionPane.showMessageDialog(mainFrame,
-								"The video file \"" + desiredName.getName() + "\" does not exist!");
-					}
+				if(FileChooser.openVideo(mainFrame)) {
+					setPlayStatus();
 				}
 			}
 		});
 
 		openAudioMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser audioChooser = new JFileChooser();
-				audioChooser.setDialogTitle("Select audio track to overlay");
-				
-				audioChooser.setAcceptAllFileFilterUsed(false);
-				audioChooser.setFileFilter(audioFilter);
-				
-				int returnValue = audioChooser.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					File desiredName = audioChooser.getSelectedFile();
-
-					if (desiredName.exists() && desiredName != null) {
-						vp.setChosenAudio(audioChooser.getSelectedFile());
-						chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
-					} else {
-						JOptionPane.showMessageDialog(mainFrame,
-								"The audio track \"" + desiredName.getName() + "\" does not exist!");
-					}
+				if(FileChooser.openAudio(mainFrame)) {
+					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
 				}
 			}
 		});
@@ -357,7 +317,6 @@ public class VidivoxGUI extends JFrame {
 	}
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 	// ----------------------- GUI manipulation methods ---------------------
 	// These methods set the GUI to a certain state matching the player state
 
