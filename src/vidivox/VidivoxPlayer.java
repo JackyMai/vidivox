@@ -18,7 +18,7 @@ public class VidivoxPlayer {
 	private File chosenVideo;
 	private File chosenAudio;
 	private String videoLength = "00:00";
-	private int defaultVolume = 80;
+	private int defaultVolume = 90;
 	private static int videoPaused = 0;
 	private int skipDirection = 0;
 

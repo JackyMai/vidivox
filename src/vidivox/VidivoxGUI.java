@@ -207,7 +207,7 @@ public class VidivoxGUI extends JFrame {
 		
 		int defaultVolume = vp.getDefaultVolume();
 		
-		final JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0, 100, defaultVolume);
+		final JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0, 150, defaultVolume);
 		volumeSlider.setToolTipText(String.valueOf(defaultVolume));
 		volumeSlider.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
