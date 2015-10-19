@@ -41,8 +41,8 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		
 		outputName = desiredName.getAbsolutePath();
 
-		String cmd = "ffmpeg -i \"" + videoPath + "\" -i \"" + audioPath + 
-				"\" -filter_complex \"amix=inputs=2:duration=first:dropout_transition=2\" \"" + outputName + "\"";
+		String cmd = "ffmpeg -i '" + videoPath + "' -i '" + audioPath + 
+				"' -filter_complex 'amix=inputs=2:duration=first:dropout_transition=2' '" + outputName + "'";
 
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();

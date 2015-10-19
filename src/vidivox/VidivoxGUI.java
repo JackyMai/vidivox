@@ -20,9 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.metal.MetalSliderUI;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
@@ -42,7 +45,6 @@ public class VidivoxGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final JFrame mainFrame = this;
 	private VidivoxPlayer vp;
-	private VidivoxWorker vw;
 	private Timer progressTimer;
 	private Timer skipTimer;
 	private JPanel topPanel;
@@ -53,6 +55,8 @@ public class VidivoxGUI extends JFrame {
 	protected JLabel progressLabel;
 	private JSlider videoSlider;
 	private JButton videoPlayButton;
+	private final FileNameExtensionFilter videoFilter;
+	private final FileNameExtensionFilter audioFilter;
 
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -64,7 +68,9 @@ public class VidivoxGUI extends JFrame {
 		setResizable(false);
 
 		vp = new VidivoxPlayer();
-		vw = new VidivoxWorker();
+		videoFilter = new FileNameExtensionFilter("Video Files (mp4, avi)", "mp4", "avi");
+		audioFilter = new FileNameExtensionFilter("MP3 Files", "mp3");
+		
 		
 		// ------------------------ Top Panel ----------------------------------
 
@@ -98,6 +104,13 @@ public class VidivoxGUI extends JFrame {
 		progressPanel.add(videoSlider);
 
 		videoSlider.setMinimum(0);
+		videoSlider.setUI(new MetalSliderUI() {
+			@Override
+			protected void scrollDueToClickInTrack(int direction) {
+		        int value = this.valueForXPosition(videoSlider.getMousePosition().x);
+		        vp.getPlayer().setTime(value);
+		    }
+		});
 		videoSlider.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -130,12 +143,15 @@ public class VidivoxGUI extends JFrame {
 			}
 		});
 		controllerPanel.add(videoOpenButton);
-
+		
 		openVideoMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser videoChooser = new JFileChooser();
 				videoChooser.setDialogTitle("Open video");
-				videoChooser.setFileFilter(new VideoFilter());
+				
+				videoChooser.setAcceptAllFileFilterUsed(false);
+				videoChooser.setFileFilter(videoFilter);
+				
 				int returnValue = videoChooser.showOpenDialog(null);
 
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -155,8 +171,11 @@ public class VidivoxGUI extends JFrame {
 		openAudioMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser audioChooser = new JFileChooser();
-				audioChooser.setFileFilter(new AudioFilter());
 				audioChooser.setDialogTitle("Select audio track to overlay");
+				
+				audioChooser.setAcceptAllFileFilterUsed(false);
+				audioChooser.setFileFilter(audioFilter);
+				
 				int returnValue = audioChooser.showOpenDialog(null);
 
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -259,7 +278,7 @@ public class VidivoxGUI extends JFrame {
 		ActionListener commentPlayAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldCheck()) {
-					vw.festival(commentTextField.getText());
+					VidivoxWorker.festival(commentTextField.getText());
 				}
 			}
 		};
@@ -437,23 +456,24 @@ public class VidivoxGUI extends JFrame {
 
 		return true;
 	}
-
+	
+	/**
+	 * saveChooser: This method takes a string of fileType (either "video"
+	 * or "audio") and a string of festival message ("null" for video file) 
+	 * and will either save the message as an mp3 file or overlay the audio
+	 * track into the selected video file, through the JFileChooser.
+	 */
 	protected void saveChooser(String fileType, String message) {
-		/*
-		 * saveChooser: This method takes a string of fileType (either "video"
-		 * or "audio") and a string of festival message ("null" for video file) 
-		 * and will either save the message as an mp3 file or overlay the audio
-		 * track into the selected video file, through the JFileChooser.
-		 */
 		JFileChooser saveChooser = new JFileChooser();
+		saveChooser.setAcceptAllFileFilterUsed(false);
 		
 		// Set file filter depending on the file type input
 		if (fileType.equals("video")) {
 			saveChooser.setDialogTitle("Choose where to save the overlayed video");
-			saveChooser.setFileFilter(new VideoFilter());
+			saveChooser.setFileFilter(videoFilter);
 		} else {
 			saveChooser.setDialogTitle("Choose where to save the festival audio track");
-			saveChooser.setFileFilter(new AudioFilter());
+			saveChooser.setFileFilter(audioFilter);
 		}
 		
 		int returnValue = saveChooser.showSaveDialog(null);
@@ -472,9 +492,9 @@ public class VidivoxGUI extends JFrame {
 					String videoPath = vp.getChosenVideo().getAbsolutePath();
 					String audioPath = vp.getChosenAudio().getAbsolutePath();
 					
-					vw.overlay(videoPath, audioPath, desiredName, vp);
+					VidivoxWorker.overlay(videoPath, audioPath, desiredName, vp);
 				} else {
-					vw.saveMp3File(message, desiredName, vp);
+					VidivoxWorker.saveMp3File(message, desiredName, vp);
 				}
 			}
 		}
@@ -525,54 +545,6 @@ public class VidivoxGUI extends JFrame {
 		}
 		
 		return confirmSave;
-	}
-	
-	// -------------- JFileChooser Filters ---------------------------
-	/*
-	 * These filters are nested classes that inherit FileFilter and filters
-	 * the JFileChooser to display only specific file types
-	 */
-
-	class VideoFilter extends FileFilter {
-		@Override
-		public boolean accept(File f) {
-			try {
-				String[] split = Files.probeContentType(f.toPath()).split("/");
-				if (split[0].equals("video") || f.isDirectory()) {
-					return true;
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			return false;
-		}
-
-		@Override
-		public String getDescription() {
-			return "Video";
-		}
-
-	}
-
-	class AudioFilter extends FileFilter {
-		@Override
-		public boolean accept(File f) {
-			try {
-				String[] split = Files.probeContentType(f.toPath()).split("/");
-				if (split[0].equals("audio") || f.isDirectory()) {
-					return true;
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			return false;
-		}
-
-		@Override
-		public String getDescription() {
-			return "Audio";
-		}
-
 	}
 
 }
