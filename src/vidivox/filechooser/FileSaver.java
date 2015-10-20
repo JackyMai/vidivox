@@ -68,20 +68,26 @@ public class FileSaver extends FileChooser {
 	}
 	
 	private static boolean checkOverwrite(JFrame mainFrame, File desiredName, String fileType) {
-		String chosenVideoPath = VidivoxGUI.vp.getChosenVideo().getAbsolutePath();
 		boolean confirmSave = false;
 		
-		if(desiredName.getAbsolutePath().equals(chosenVideoPath)) {
-			int overwriteReponse = JOptionPane.showConfirmDialog(mainFrame,
-					"You are overwriting the original video file. \nAre you sure you wish to overwrite it?",
-					"WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if(fileType.equals("video")) {
+			String chosenVideoPath = VidivoxGUI.vp.getChosenVideo().getAbsolutePath();
 			
-			// Rename the original file to a temporary file then use it to overlay the video
-			if(overwriteReponse == JOptionPane.YES_OPTION) {
-				VidivoxGUI.vp.setChosenVideoTemp();
-				confirmSave = true;
+			if(desiredName.getAbsolutePath().equals(chosenVideoPath)) {
+				int overwriteReponse = JOptionPane.showConfirmDialog(mainFrame,
+						"You are overwriting the original video file. \nAre you sure you wish to overwrite it?",
+						"WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				
+				// Rename the original file to a temporary file then use it to overlay the video
+				if(overwriteReponse == JOptionPane.YES_OPTION) {
+					VidivoxGUI.vp.setChosenVideoTemp();
+					
+					return true;
+				}
 			}
-		} else if (desiredName.exists() && desiredName != null) {
+		}
+		
+		if (desiredName.exists() && desiredName != null) {
 			int overwriteReponse = JOptionPane.showConfirmDialog(mainFrame,
 					"The " + fileType + " file \"" + desiredName.getName()
 							+ "\" already exists. Do you wish to overwrite it?",
