@@ -421,10 +421,10 @@ public class VidivoxGUI extends JFrame {
 	// ------------------- Timer creation methods --------------------------
 
 	protected void createSkipTimer() {
-		skipTimer = new Timer(1000, new ActionListener() {
+		skipTimer = new Timer(50, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				vp.getPlayer().skip(5000 * vp.getSkipDirection());
+				vp.getPlayer().skip(200 * vp.getSkipDirection());
 			}
 		});
 	}
