@@ -10,8 +10,8 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 /* 
  * Main: This class acts as an entry point and initialises the program 
  * 
- * Authors: Helen Zhao, Jacky Mai
- * UPI: hzha587, jmai871
+ * Authors: Jacky Mai
+ * UPI: jmai871
  */
 public class Main {
 	public static void main(String[] args) {

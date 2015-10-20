@@ -33,8 +33,8 @@ import javax.swing.JSeparator;
 
 /* VideoPlayerGUI: This class deals with the GUI aspect of the video player from BigBuckPlayer 
  * 
- * Authors: Helen Zhao, Jacky Mai
- * UPI: hzha587, jmai871
+ * Authors Jacky Mai
+ * UPI: jmai871
  */
 public class VidivoxGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -52,6 +52,7 @@ public class VidivoxGUI extends JFrame {
 	private JButton videoRWButton;
 	private JButton videoPlayButton;
 	private JButton videoFFButton;
+	private JButton videoExportButton;
 
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -141,6 +142,7 @@ public class VidivoxGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(FileOpener.openVideo(mainFrame)) {
 					setPlayStatus();
+					enableExportButton();
 				}
 			}
 		});
@@ -149,6 +151,7 @@ public class VidivoxGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(FileOpener.openAudio(mainFrame)) {
 					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
+					enableExportButton();
 				}
 			}
 		});
@@ -212,8 +215,9 @@ public class VidivoxGUI extends JFrame {
 		});
 		controllerPanel.add(videoVolumeButton);
 
-		JButton festRemixButton = new JButton("Export");
-		festRemixButton.addActionListener(new ActionListener() {
+		videoExportButton = new JButton("Export");
+		videoExportButton.setEnabled(false);
+		videoExportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (vp.getChosenVideo() == null) {
 					JOptionPane.showMessageDialog(mainFrame,
@@ -226,7 +230,7 @@ public class VidivoxGUI extends JFrame {
 				}
 			}
 		});
-		controllerPanel.add(festRemixButton);
+		controllerPanel.add(videoExportButton);
 
 		// ------------------- Comment Panel ---------------------------
 
@@ -235,7 +239,7 @@ public class VidivoxGUI extends JFrame {
 		commentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
 		topPanel.add(commentPanel);
 
-		JLabel commentLabel = new JLabel("Festival");
+		JLabel commentLabel = new JLabel("Comment");
 		commentPanel.add(commentLabel);
 
 		ActionListener commentPlayAction = new ActionListener() {
@@ -386,6 +390,12 @@ public class VidivoxGUI extends JFrame {
 		videoRWButton.setEnabled(set);
 		videoPlayButton.setEnabled(set);
 		videoFFButton.setEnabled(set);
+	}
+	
+	private void enableExportButton() {
+		if(vp.getChosenVideo() != null && vp.getChosenAudio() != null) {
+			videoExportButton.setEnabled(true);
+		}
 	}
 	
 	protected String formatLength(long videoLength) {
