@@ -300,13 +300,12 @@ public class VidivoxGUI extends JFrame {
 				String videoLength = formatLength(newTime);
 				vp.setVideoLength(videoLength);
 			}
-		});
-		vp.getPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+			
 			public void opening(MediaPlayer player) {
 				chosenVideoLabel.setText("Video: " + vp.getChosenVideo().getName());
+				enablePlayerControl(true);
 			}
-		});
-		vp.getPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+			
 			public void finished(MediaPlayer player) {
 				setStoppedStatus();
 				vp.stop();
