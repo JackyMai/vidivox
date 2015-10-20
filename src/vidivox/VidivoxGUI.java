@@ -10,23 +10,22 @@ import javax.swing.JPopupMenu;
 
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
+import vidivox.filechooser.FileOpener;
+import vidivox.filechooser.FileSaver;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
 import java.awt.Color;
@@ -40,7 +39,7 @@ import javax.swing.JSeparator;
 public class VidivoxGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final JFrame mainFrame = this;
-	protected static VidivoxPlayer vp;
+	public static VidivoxPlayer vp;
 	private Timer progressTimer;
 	private Timer skipTimer;
 	private JPanel topPanel;
@@ -138,7 +137,7 @@ public class VidivoxGUI extends JFrame {
 		
 		openVideoMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(FileChooser.openVideo(mainFrame)) {
+				if(FileOpener.openVideo(mainFrame)) {
 					setPlayStatus();
 				}
 			}
@@ -146,7 +145,7 @@ public class VidivoxGUI extends JFrame {
 
 		openAudioMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(FileChooser.openAudio(mainFrame)) {
+				if(FileOpener.openAudio(mainFrame)) {
 					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
 				}
 			}
@@ -219,7 +218,7 @@ public class VidivoxGUI extends JFrame {
 					JOptionPane.showMessageDialog(mainFrame,
 							"Please select an audio track to overlay into the video via Add > Audio track");
 				} else {
-					saveChooser("video", null);
+					FileSaver.exportFile(mainFrame, "video", null);
 				}
 			}
 		});
@@ -257,7 +256,7 @@ public class VidivoxGUI extends JFrame {
 		commentSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldCheck()) {
-					saveChooser("audio", commentTextField.getText());
+					FileSaver.exportFile(mainFrame, "audio", commentTextField.getText());
 				}
 			}
 		});
@@ -415,95 +414,4 @@ public class VidivoxGUI extends JFrame {
 
 		return true;
 	}
-	
-	/**
-	 * saveChooser: This method takes a string of fileType (either "video"
-	 * or "audio") and a string of festival message ("null" for video file) 
-	 * and will either save the message as an mp3 file or overlay the audio
-	 * track into the selected video file, through the JFileChooser.
-	 */
-	protected void saveChooser(String fileType, String message) {
-		JFileChooser saveChooser = new JFileChooser();
-		saveChooser.setAcceptAllFileFilterUsed(false);
-		
-		// Set file filter depending on the file type input
-		if (fileType.equals("video")) {
-			saveChooser.setDialogTitle("Choose where to save the overlayed video");
-			saveChooser.setFileFilter(videoFilter);
-		} else {
-			saveChooser.setDialogTitle("Choose where to save the festival audio track");
-			saveChooser.setFileFilter(audioFilter);
-		}
-		
-		int returnValue = saveChooser.showSaveDialog(null);
-
-		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			File desiredName = saveChooser.getSelectedFile();
-			
-			desiredName = checkSuffix(desiredName, fileType);
-			
-			// If the file selected already exists, display a JOptionPane and ask
-			// the user for overwriting confirmation
-			boolean confirmSave = checkOverwrite(desiredName, fileType);
-			
-			if (confirmSave == true) {
-				if (fileType.equals("video")) {
-					String videoPath = vp.getChosenVideo().getAbsolutePath();
-					String audioPath = vp.getChosenAudio().getAbsolutePath();
-					
-					VidivoxWorker.overlay(videoPath, audioPath, desiredName, vp);
-				} else {
-					VidivoxWorker.saveMp3File(message, desiredName, vp);
-				}
-			}
-		}
-	}
-	
-	protected File checkSuffix(File desiredName, String fileType) {
-		if(fileType.equals("video")) {
-			if(!desiredName.getName().endsWith(".avi")) {
-				desiredName = new File(desiredName.getAbsolutePath() + ".avi");
-			}
-		} else {
-			if(!desiredName.getName().endsWith(".mp3")) {
-				desiredName = new File(desiredName.getAbsolutePath() + ".mp3");
-			}
-		}
-		
-		return desiredName;
-	}
-	
-	protected boolean checkOverwrite(File desiredName, String fileType) {
-		String chosenVideoPath = vp.getChosenVideo().getAbsolutePath();
-		boolean confirmSave = false;
-		
-		if(desiredName.getAbsolutePath().equals(chosenVideoPath)) {
-			int overwriteReponse = JOptionPane.showConfirmDialog(mainFrame,
-					"You are overwriting the original video file. \nAre you sure you wish to overwrite it?",
-					"WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			
-			// Rename the original file to a temporary file then use it to overlay the video
-			if(overwriteReponse == JOptionPane.YES_OPTION) {
-				vp.setChosenVideoTemp();
-				confirmSave = true;
-			}
-		} else if (desiredName.exists() && desiredName != null) {
-			int overwriteReponse = JOptionPane.showConfirmDialog(mainFrame,
-					"The " + fileType + " file \"" + desiredName.getName()
-							+ "\" already exists. Do you wish to overwrite it?",
-					"WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-
-			// If the user clicks yes, delete the existing file with the same name
-			// and set confirmSave to true
-			if (overwriteReponse == JOptionPane.YES_OPTION) {
-				desiredName.delete();
-				confirmSave = true;
-			}
-		} else {
-			confirmSave = true;
-		}
-		
-		return confirmSave;
-	}
-
 }
