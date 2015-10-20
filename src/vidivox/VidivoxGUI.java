@@ -7,6 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
@@ -20,14 +21,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.metal.MetalSliderUI;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
+import javax.swing.JTable;
+
 import java.awt.Color;
 import javax.swing.JSeparator;
 
@@ -53,18 +62,37 @@ public class VidivoxGUI extends JFrame {
 	private JButton videoPlayButton;
 	private JButton videoFFButton;
 	private JButton videoExportButton;
-
+	private JTable commentTable;
+	private DefaultTableModel commentModel;
+	private ArrayList<File> audioList;
+	
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
+	@SuppressWarnings("serial")
 	public VidivoxGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("VIDIVOX");
-		setSize(950, 648);
+		setSize(950, 776);
 		setLocationRelativeTo(null);
 		setResizable(false);
-
-		vp = new VidivoxPlayer();
 		
+		mainFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				String ObjButtons[] = {"Yes", "No"};
+				 int returnValue = JOptionPane.showOptionDialog(mainFrame, "Are you sure that you want to exist Vidivox?\n"
+				 		+ "All comments will need to be re-added.",
+						 "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						 null, ObjButtons, ObjButtons[1]);
+				 
+				 if(returnValue == 0) {
+					 System.exit(0);
+				 }
+			}
+		});
+		
+		vp = new VidivoxPlayer();
+		audioList = new ArrayList<File>();
 		
 		// ------------------------ Top Panel ----------------------------------
 
@@ -152,6 +180,9 @@ public class VidivoxGUI extends JFrame {
 				if(FileOpener.openAudio(mainFrame)) {
 					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
 					enableExportButton();
+					
+					audioList.add(vp.getChosenAudio());
+					commentModel.addRow(new Object[]{vp.getChosenAudio().getName(), "00:00:00"});
 				}
 			}
 		});
@@ -233,14 +264,21 @@ public class VidivoxGUI extends JFrame {
 		controllerPanel.add(videoExportButton);
 
 		// ------------------- Comment Panel ---------------------------
-
+		
 		JPanel commentPanel = new JPanel();
-		commentPanel.setBackground(Color.decode("#F2F1F0"));
-		commentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 0));
+		commentPanel.setLayout(new BoxLayout(commentPanel, BoxLayout.Y_AXIS));
 		topPanel.add(commentPanel);
-
+		
+		
+		// --------------------------- Comment Input Panel ----------------------------
+		
+		JPanel commentInputPanel = new JPanel();
+		commentInputPanel.setBackground(Color.decode("#F2F1F0"));
+		commentInputPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 0));
+		commentPanel.add(commentInputPanel);
+		
 		JLabel commentLabel = new JLabel("Comment");
-		commentPanel.add(commentLabel);
+		commentInputPanel.add(commentLabel);
 
 		ActionListener commentPlayAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -252,13 +290,13 @@ public class VidivoxGUI extends JFrame {
 
 		commentTextField = new JTextField();
 		commentTextField.setMaximumSize(commentTextField.getPreferredSize());
-		commentPanel.add(commentTextField);
+		commentInputPanel.add(commentTextField);
 		commentTextField.setColumns(65);
 		commentTextField.addActionListener(commentPlayAction);
 
 		JButton commentPlayButton = new JButton("Play");
 		commentPlayButton.addActionListener(commentPlayAction);
-		commentPanel.add(commentPlayButton);
+		commentInputPanel.add(commentPlayButton);
 
 		JButton commentSaveButton = new JButton("Save");
 		commentSaveButton.addActionListener(new ActionListener() {
@@ -268,15 +306,37 @@ public class VidivoxGUI extends JFrame {
 				}
 			}
 		});
-		commentPanel.add(commentSaveButton);
+		commentInputPanel.add(commentSaveButton);
 
 		
+		// -------------------------- Comment Table Panel -------------------------------
+		
+		JPanel commentTablePanel = new JPanel();
+		commentTablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 6));
+		commentPanel.add(commentTablePanel);
+		
+		commentModel = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		commentModel.setColumnIdentifiers(new String[]{"Audio Track", "Insert At"});
+		commentTable = new JTable(commentModel);
+		
+		JScrollPane commentScrollPane = new JScrollPane(commentTable);
+		commentScrollPane.setViewportView(commentTable);
+		commentScrollPane.setPreferredSize(new Dimension(commentInputPanel.getPreferredSize().width-4, 86));
+		commentTablePanel.add(commentScrollPane);
+		
+		
 		// ------------------- Status Panel -----------------------------
-
+		JSeparator statusSeparator = new JSeparator();
+		topPanel.add(statusSeparator);
 		JPanel statusPanel = new JPanel();
 		statusPanel.setBackground(Color.decode("#F2F1F0"));
 		topPanel.add(statusPanel);
-		statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 9, 6));
+		statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
 		playerStatusLabel = new JLabel("Status: stopped");
 		statusPanel.add(playerStatusLabel);
