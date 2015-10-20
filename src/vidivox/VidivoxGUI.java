@@ -49,7 +49,9 @@ public class VidivoxGUI extends JFrame {
 	protected JLabel chosenAudioLabel;
 	protected JLabel progressLabel;
 	private JSlider videoSlider;
+	private JButton videoRWButton;
 	private JButton videoPlayButton;
+	private JButton videoFFButton;
 
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -151,14 +153,14 @@ public class VidivoxGUI extends JFrame {
 			}
 		});
 
-		JButton videoFBButton = new JButton("<<");
-		videoFBButton.addActionListener(new ActionListener() {
+		videoRWButton = new JButton("<<");
+		videoRWButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setRewindStatus();
 				vp.skip(-1);
 			}
 		});
-		controllerPanel.add(videoFBButton);
+		controllerPanel.add(videoRWButton);
 
 		videoPlayButton = new JButton("▐ ▌");
 		videoPlayButton.addActionListener(new ActionListener() {
@@ -174,7 +176,7 @@ public class VidivoxGUI extends JFrame {
 		});
 		controllerPanel.add(videoPlayButton);
 
-		JButton videoFFButton = new JButton(">>");
+		videoFFButton = new JButton(">>");
 		videoFFButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setFastForwardStatus();
@@ -182,6 +184,8 @@ public class VidivoxGUI extends JFrame {
 			}
 		});
 		controllerPanel.add(videoFFButton);
+		
+		enablePlayerControl(false);
 		
 		int defaultVolume = vp.getDefaultVolume();
 		
@@ -262,6 +266,7 @@ public class VidivoxGUI extends JFrame {
 		});
 		commentPanel.add(commentSaveButton);
 
+		
 		// ------------------- Status Panel -----------------------------
 
 		JPanel statusPanel = new JPanel();
@@ -378,6 +383,12 @@ public class VidivoxGUI extends JFrame {
 	
 	// ----------------------- Miscellaneous methods ------------------------
 
+	private void enablePlayerControl(boolean set) {
+		videoRWButton.setEnabled(set);
+		videoPlayButton.setEnabled(set);
+		videoFFButton.setEnabled(set);
+	}
+	
 	protected String formatLength(long videoLength) {
 		/*
 		 * formatLength: This method takes a long number videolength and
