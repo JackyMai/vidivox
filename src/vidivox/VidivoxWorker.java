@@ -3,9 +3,9 @@ package vidivox;
 
 import java.io.File;
 
-import worker.FestivalWorker;
-import worker.OverlayWorker;
-import worker.SaveMp3Worker;
+import vidivox.worker.FestivalWorker;
+import vidivox.worker.OverlayWorker;
+import vidivox.worker.SaveMp3Worker;
 
 public class VidivoxWorker {
 	public static void saveMp3File(String message, File desiredName, VidivoxPlayer vp) {

@@ -1,4 +1,4 @@
-package worker;
+package vidivox.worker;
 import java.io.File;
 
 import javax.swing.JDialog;

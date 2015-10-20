@@ -1,4 +1,4 @@
-package worker;
+package vidivox.worker;
 import javax.swing.SwingWorker;
 
 /* 
