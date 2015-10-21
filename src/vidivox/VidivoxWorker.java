@@ -1,8 +1,6 @@
 package vidivox;
 
-
 import java.io.File;
-
 import vidivox.worker.FestivalWorker;
 import vidivox.worker.OverlayWorker;
 import vidivox.worker.SaveMp3Worker;
