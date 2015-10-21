@@ -19,13 +19,12 @@ public class FileSaver extends FileChooser {
 	public static void exportFile(JFrame mainFrame, String fileType, String message) {
 		// Set file filter depending on the file type input
 		if (fileType.equals("video")) {
-			fileChooser.setDialogTitle("Choose where to save the overlayed video");
-			fileChooser.setFileFilter(videoFilter);
+			setVideoSaveFilter();
 		} else {
-			fileChooser.setDialogTitle("Choose where to save the festival audio track");
-			fileChooser.setFileFilter(audioFilter);
+			setAudioSaveFilter();
 		}
 		
+		fileChooser.resetChoosableFileFilters();
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.setSelectedFile(new File(""));
 		
@@ -68,8 +67,6 @@ public class FileSaver extends FileChooser {
 	}
 	
 	private static boolean checkOverwrite(JFrame mainFrame, File desiredName, String fileType) {
-		boolean confirmSave = false;
-		
 		if(fileType.equals("video")) {
 			String chosenVideoPath = VidivoxGUI.vp.getChosenVideo().getAbsolutePath();
 			
@@ -97,12 +94,12 @@ public class FileSaver extends FileChooser {
 			// and set confirmSave to true
 			if (overwriteReponse == JOptionPane.YES_OPTION) {
 				desiredName.delete();
-				confirmSave = true;
+				return true;
 			}
 		} else {
-			confirmSave = true;
+			return true;
 		}
 		
-		return confirmSave;
+		return false;
 	}
 }

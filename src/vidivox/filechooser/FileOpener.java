@@ -9,13 +9,12 @@ import vidivox.VidivoxGUI;
 public class FileOpener extends FileChooser {
 	private static boolean openMedia(JFrame mainFrame, String fileType) {
 		if(fileType.equals("video")) {
-			fileChooser.setDialogTitle("Open video");
-			fileChooser.setFileFilter(videoFilter);
+			setVideoOpenFilter();
 		} else {
-			fileChooser.setDialogTitle("Select audio track to overlay");
-			fileChooser.setFileFilter(audioFilter);
+			setAudioOpenFilter();
 		}
 		
+		fileChooser.resetChoosableFileFilters();
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.setSelectedFile(new File(""));
 		
