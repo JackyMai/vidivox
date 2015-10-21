@@ -278,9 +278,7 @@ public class VidivoxGUI extends JFrame {
 
 		ActionListener commentPlayAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (textFieldCheck()) {
-					VidivoxWorker.festival(commentTextField.getText());
-				}
+				VidivoxWorker.festival(commentTextField.getText());
 			}
 		};
 
