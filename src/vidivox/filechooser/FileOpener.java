@@ -8,15 +8,15 @@ import vidivox.VidivoxGUI;
 
 public class FileOpener extends FileChooser {
 	private static boolean openMedia(JFrame mainFrame, String fileType) {
+		fileChooser.resetChoosableFileFilters();
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.setSelectedFile(new File(""));
+		
 		if(fileType.equals("video")) {
 			setVideoOpenFilter();
 		} else {
 			setAudioOpenFilter();
 		}
-		
-		fileChooser.resetChoosableFileFilters();
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.setSelectedFile(new File(""));
 		
 		int returnValue = fileChooser.showOpenDialog(mainFrame);
 

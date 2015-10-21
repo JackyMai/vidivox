@@ -18,15 +18,15 @@ public class FileSaver extends FileChooser {
 	 */
 	public static void exportFile(JFrame mainFrame, String fileType, String message) {
 		// Set file filter depending on the file type input
+		fileChooser.resetChoosableFileFilters();
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.setSelectedFile(new File(""));
+		
 		if (fileType.equals("video")) {
 			setVideoSaveFilter();
 		} else {
 			setAudioSaveFilter();
 		}
-		
-		fileChooser.resetChoosableFileFilters();
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.setSelectedFile(new File(""));
 		
 		int returnValue = fileChooser.showSaveDialog(mainFrame);
 
