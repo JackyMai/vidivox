@@ -11,8 +11,10 @@ import javax.swing.JScrollPane;
 
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
+import vidivox.audiotrack.AudioTrack;
 import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
+import vidivox.helper.TimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -63,7 +65,7 @@ public class VidivoxGUI extends JFrame {
 	private JButton videoExportButton;
 	private JTable commentTable;
 	private DefaultTableModel commentModel;
-	private ArrayList<File> audioList;
+	private ArrayList<AudioTrack> audioList;
 	
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -91,7 +93,7 @@ public class VidivoxGUI extends JFrame {
 		});
 		
 		vp = new VidivoxPlayer();
-		audioList = new ArrayList<File>();
+		audioList = new ArrayList<AudioTrack>();
 		createDir();
 		
 		// ------------------------ Top Panel ----------------------------------
@@ -181,8 +183,9 @@ public class VidivoxGUI extends JFrame {
 					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
 					enableExportButton();
 					
-					audioList.add(vp.getChosenAudio());
-					commentModel.addRow(new Object[]{vp.getChosenAudio().getName(), "00:00:00"});
+					AudioTrack newTrack = new AudioTrack(vp.getChosenAudio(), (int)vp.getPlayer().getTime());
+					audioList.add(newTrack);
+					commentModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
 				}
 			}
 		});
@@ -353,7 +356,7 @@ public class VidivoxGUI extends JFrame {
 			public void lengthChanged(MediaPlayer player, long newTime) {
 				videoSlider.setMaximum((int) newTime);
 				
-				String videoLength = formatLength(newTime);
+				String videoLength = TimeFormatter.formatLength(newTime);
 				vp.setVideoLength(videoLength);
 			}
 			
@@ -427,7 +430,7 @@ public class VidivoxGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				long currentTime = vp.getPlayer().getTime();
 
-				progressLabel.setText(formatLength(currentTime) + " / " + vp.getVideoLength());
+				progressLabel.setText(TimeFormatter.formatLength(currentTime) + " / " + vp.getVideoLength());
 				videoSlider.setValue((int) vp.getPlayer().getTime());
 			}
 		});
@@ -447,23 +450,6 @@ public class VidivoxGUI extends JFrame {
 	private void enableExportButton() {
 		if(vp.getChosenVideo() != null && vp.getChosenAudio() != null) {
 			videoExportButton.setEnabled(true);
-		}
-	}
-	
-	protected String formatLength(long videoLength) {
-		/*
-		 * formatLength: This method takes a long number videolength and
-		 * converts it into a readable string
-		 */
-		int totalLength = (int) videoLength / 1000;
-		int min = totalLength / 60;
-		int sec = totalLength % 60;
-
-		if (min < 60) {
-			return String.format("%02d:%02d", min, sec);
-		} else {
-			int hour = min / 60;
-			return String.format("%02d:%02d:%02d", hour, min - 60, sec);
 		}
 	}
 
