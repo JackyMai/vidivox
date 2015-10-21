@@ -10,8 +10,8 @@ import vidivox.VidivoxPlayer;
  * 
  * Inputs: String message, File desiredName
  * 
- * Authors: Helen Zhao, Jacky Mai
- * UPI: hzha587, jmai871
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
  */
 public class SaveMp3Worker extends SwingWorker<Void, Void> {
 	private String outputName;

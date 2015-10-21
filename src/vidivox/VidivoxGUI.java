@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.metal.MetalSliderUI;
 import javax.swing.table.DefaultTableModel;
 
@@ -79,20 +78,21 @@ public class VidivoxGUI extends JFrame {
 		mainFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				String ObjButtons[] = {"Yes", "No"};
-				 int returnValue = JOptionPane.showOptionDialog(mainFrame, "Are you sure that you want to exist Vidivox?\n"
-				 		+ "All comments will need to be re-added.",
-						 "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-						 null, ObjButtons, ObjButtons[1]);
+				String buttons[] = {"Yes", "No"};
+				int returnValue = JOptionPane.showOptionDialog(mainFrame, "Are you sure that you want to exist Vidivox?\n"
+						+ "All comments will need to be re-added.",
+						"WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, buttons, buttons[1]);
 				 
-				 if(returnValue == 0) {
-					 System.exit(0);
-				 }
+				if(returnValue == 0) {
+					System.exit(0);
+				}
 			}
 		});
 		
 		vp = new VidivoxPlayer();
 		audioList = new ArrayList<File>();
+		createDir();
 		
 		// ------------------------ Top Panel ----------------------------------
 
@@ -250,15 +250,7 @@ public class VidivoxGUI extends JFrame {
 		videoExportButton.setEnabled(false);
 		videoExportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (vp.getChosenVideo() == null) {
-					JOptionPane.showMessageDialog(mainFrame,
-							"Please select a video file to overlay the audio track into via Add > Video file");
-				} else if (vp.getChosenAudio() == null) {
-					JOptionPane.showMessageDialog(mainFrame,
-							"Please select an audio track to overlay into the video via Add > Audio track");
-				} else {
-					FileSaver.exportFile(mainFrame, "video", null);
-				}
+				FileSaver.exportFile(mainFrame, "video", null);
 			}
 		});
 		controllerPanel.add(videoExportButton);
@@ -493,5 +485,10 @@ public class VidivoxGUI extends JFrame {
 		}
 
 		return true;
+	}
+	
+	protected void createDir() {
+		File vidivoxDir = new File(".vidivox_jmai871");
+		vidivoxDir.mkdirs();
 	}
 }
