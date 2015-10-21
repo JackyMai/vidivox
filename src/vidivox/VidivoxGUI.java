@@ -14,6 +14,7 @@ import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import vidivox.audiotrack.AudioTrack;
 import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
+import vidivox.helper.TextLimit;
 import vidivox.helper.TimeFormatter;
 
 import javax.swing.JButton;
@@ -284,6 +285,7 @@ public class VidivoxGUI extends JFrame {
 		};
 
 		commentTextField = new JTextField();
+		commentTextField.setDocument(new TextLimit(140));
 		commentTextField.setMaximumSize(commentTextField.getPreferredSize());
 		commentInputPanel.add(commentTextField);
 		commentTextField.setColumns(65);
@@ -296,9 +298,7 @@ public class VidivoxGUI extends JFrame {
 		JButton commentSaveButton = new JButton("Save");
 		commentSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (textFieldCheck()) {
-					FileSaver.exportFile(mainFrame, "audio", commentTextField.getText());
-				}
+				FileSaver.exportFile(mainFrame, "audio", commentTextField.getText());
 			}
 		});
 		commentInputPanel.add(commentSaveButton);
@@ -451,26 +451,6 @@ public class VidivoxGUI extends JFrame {
 		if(vp.getChosenVideo() != null && vp.getChosenAudio() != null) {
 			videoExportButton.setEnabled(true);
 		}
-	}
-
-	protected boolean textFieldCheck() {
-		/*
-		 * textFieldCheck: This method checks the text in "festTextField" for
-		 * empty string and string longer than 20 words, then displays a warning
-		 * message if either is found
-		 */
-		String message = commentTextField.getText().trim();
-		String[] words = message.split(" ");
-
-		if (message.length() == 0) {
-			JOptionPane.showMessageDialog(mainFrame, "The message cannot be empty!");
-			return false;
-		} else if (words.length > 20) {
-			JOptionPane.showMessageDialog(mainFrame, "Please do not enter more than 20 words at a time!");
-			return false;
-		}
-
-		return true;
 	}
 	
 	protected void createDir() {
