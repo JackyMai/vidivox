@@ -61,8 +61,12 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 			vidiTemp.delete();
 		}
 		
-		JOptionPane.showMessageDialog(vp.getPlayerComponent(), "Successfully saved as \"" + outputName + "\"");
-		vp.setChosenVideo(new File (outputName));
-		vp.playVideo();
+		int returnValue = JOptionPane.showConfirmDialog(vp.getPlayerComponent(), "Successfully save as \"" + outputName + "\"\n"
+				+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
+		
+		if(returnValue == JOptionPane.YES_OPTION) {
+			vp.setChosenVideo(new File (outputName));
+			vp.playVideo();
+		}
 	}
 }
