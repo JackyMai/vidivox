@@ -2,13 +2,12 @@ package vidivox.worker;
 import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import vidivox.VidivoxGUI;
 
-import vidivox.VidivoxPlayer;
-
-/* SaveMp3Worker: This class is a SwingWorker that saves a message to temporary .wav 
- * using BASH calls from process builder, then converts the wav files to mp3
+/* SaveMp3Worker: This class is a SwingWorker that saves a message to temporary wav 
+ * output using bash, then converts the wav output to mp3 through piping.
  * 
- * Inputs: String message, File desiredName
+ * Inputs: String message, File desiredName.
  * 
  * Author: Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
@@ -16,12 +15,10 @@ import vidivox.VidivoxPlayer;
 public class SaveMp3Worker extends SwingWorker<Void, Void> {
 	private String outputName;
 	private String message;
-	private VidivoxPlayer vp;
 	
-	public SaveMp3Worker(String message, File desiredName, VidivoxPlayer vp) {
+	public SaveMp3Worker(String message, File desiredName) {
 		this.message = message;
 		this.outputName = desiredName.getAbsolutePath();
-		this.vp = vp;
 	}
 	
 	@Override
@@ -36,6 +33,6 @@ public class SaveMp3Worker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected void done() {
-		JOptionPane.showMessageDialog(vp.getPlayerComponent(), "Successfully saved as '" + outputName + "'");
+		JOptionPane.showMessageDialog(VidivoxGUI.vp.getPlayerComponent(), "Successfully saved as '" + outputName + "'");
 	}
 }

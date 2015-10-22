@@ -48,7 +48,7 @@ public class FileSaver extends FileChooser {
 					
 					VidivoxWorker.overlay(videoPath, audioList, desiredName);
 				} else {
-					VidivoxWorker.saveMp3File(message, desiredName, VidivoxGUI.vp);
+					VidivoxWorker.saveMp3File(message, desiredName);
 				}
 			}
 		}
