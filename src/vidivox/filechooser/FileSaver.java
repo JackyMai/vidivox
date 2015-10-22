@@ -1,11 +1,13 @@
 package vidivox.filechooser;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import vidivox.AudioTrack;
 import vidivox.VidivoxGUI;
 import vidivox.VidivoxWorker;
 
@@ -41,10 +43,10 @@ public class FileSaver extends FileChooser {
 			
 			if (confirmSave == true) {
 				if (fileType.equals("video")) {
-					String videoPath = VidivoxGUI.vp.getChosenVideo().getAbsolutePath();
-					String audioPath = VidivoxGUI.vp.getChosenAudio().getAbsolutePath();
+					String videoPath = VidivoxGUI.vm.getChosenVideoPath();
+					ArrayList<AudioTrack> audioList = VidivoxGUI.vm.getAudioList();
 					
-					VidivoxWorker.overlay(videoPath, audioPath, desiredName, VidivoxGUI.vp);
+					VidivoxWorker.overlay(videoPath, audioList, desiredName);
 				} else {
 					VidivoxWorker.saveMp3File(message, desiredName, VidivoxGUI.vp);
 				}
@@ -68,7 +70,7 @@ public class FileSaver extends FileChooser {
 	
 	private static boolean checkOverwrite(JFrame mainFrame, File desiredName, String fileType) {
 		if(fileType.equals("video")) {
-			String chosenVideoPath = VidivoxGUI.vp.getChosenVideo().getAbsolutePath();
+			String chosenVideoPath = VidivoxGUI.vm.getChosenVideoPath();
 			
 			if(desiredName.getAbsolutePath().equals(chosenVideoPath)) {
 				int overwriteReponse = JOptionPane.showConfirmDialog(mainFrame,
@@ -77,7 +79,7 @@ public class FileSaver extends FileChooser {
 				
 				// Rename the original file to a temporary file then use it to overlay the video
 				if(overwriteReponse == JOptionPane.YES_OPTION) {
-					VidivoxGUI.vp.setChosenVideoTemp();
+					VidivoxGUI.vm.setChosenVideoTemp();
 					
 					return true;
 				}

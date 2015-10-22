@@ -1,4 +1,4 @@
-package vidivox.audiotrack;
+package vidivox;
 
 import java.io.File;
 
@@ -17,6 +17,10 @@ public class AudioTrack {
 	
 	public String getAudioName() {
 		return audioFile.getName();
+	}
+	
+	public String getAudioPath() {
+		return audioFile.getAbsolutePath();
 	}
 	
 	public int getInsertTime() {

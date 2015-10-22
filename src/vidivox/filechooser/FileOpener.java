@@ -21,19 +21,19 @@ public class FileOpener extends FileChooser {
 		int returnValue = fileChooser.showOpenDialog(mainFrame);
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			File desiredName = fileChooser.getSelectedFile();
-			if (desiredName.exists() && desiredName != null) {
+			File chosenFile = fileChooser.getSelectedFile();
+			if (chosenFile.exists() && chosenFile != null) {
 				if(fileType.equals("video")) {
-					VidivoxGUI.vp.setChosenVideo(fileChooser.getSelectedFile());
-					VidivoxGUI.vp.playVideo();
+					VidivoxGUI.vm.setChosenVideo(chosenFile);
+					VidivoxGUI.vp.playVideo(chosenFile);
 				} else {
-					VidivoxGUI.vp.setChosenAudio(fileChooser.getSelectedFile());
+					VidivoxGUI.vm.setChosenAudio(chosenFile);
 				}
 				
 				return true;
 			} else {
 				JOptionPane.showMessageDialog(mainFrame,
-					"The " + fileType + "file \"" + desiredName.getName() + "\" does not exist!");
+					"The " + fileType + "file \"" + chosenFile.getName() + "\" does not exist!");
 			}
 		}
 		

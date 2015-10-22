@@ -1,6 +1,7 @@
 package vidivox;
 
 import java.io.File;
+import java.util.ArrayList;
 import vidivox.worker.FestivalWorker;
 import vidivox.worker.OverlayWorker;
 import vidivox.worker.SaveMp3Worker;
@@ -11,8 +12,8 @@ public class VidivoxWorker {
 		smw.execute();
 	}
 	
-	public static void overlay(String videoPath, String audioPath, File desiredName, VidivoxPlayer vp) {
-		OverlayWorker ow = new OverlayWorker(videoPath, audioPath, desiredName, vp);
+	public static void overlay(String videoPath, ArrayList<AudioTrack> audioList, File desiredName) {
+		OverlayWorker ow = new OverlayWorker(videoPath, audioList, desiredName);
 		ow.execute();
 	}
 

@@ -11,7 +11,6 @@ import javax.swing.JScrollPane;
 
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
-import vidivox.audiotrack.AudioTrack;
 import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
 import vidivox.helper.TextLimit;
@@ -34,7 +33,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JSlider;
 import javax.swing.JTable;
@@ -51,6 +49,7 @@ public class VidivoxGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final JFrame mainFrame = this;
 	public static VidivoxPlayer vp;
+	public static VidivoxModel vm;
 	private Timer progressTimer;
 	private Timer skipTimer;
 	private JPanel topPanel;
@@ -66,7 +65,6 @@ public class VidivoxGUI extends JFrame {
 	private JButton videoExportButton;
 	private JTable commentTable;
 	private DefaultTableModel commentModel;
-	private ArrayList<AudioTrack> audioList;
 	
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -94,7 +92,8 @@ public class VidivoxGUI extends JFrame {
 		});
 		
 		vp = new VidivoxPlayer();
-		audioList = new ArrayList<AudioTrack>();
+		vm = new VidivoxModel();
+		
 		createDir();
 		
 		// ------------------------ Top Panel ----------------------------------
@@ -181,12 +180,12 @@ public class VidivoxGUI extends JFrame {
 		openAudioMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(FileOpener.openAudio(mainFrame)) {
-					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
-					enableExportButton();
-					
-					AudioTrack newTrack = new AudioTrack(vp.getChosenAudio(), (int)vp.getPlayer().getTime());
-					audioList.add(newTrack);
+//					chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
+					AudioTrack newTrack = new AudioTrack(vm.getChosenAudio(), (int)vp.getCurrentTime());
 					commentModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
+					vm.addAudioTrack(newTrack);
+					
+					enableExportButton();
 				}
 			}
 		});
@@ -359,7 +358,7 @@ public class VidivoxGUI extends JFrame {
 			}
 			
 			public void opening(MediaPlayer player) {
-				chosenVideoLabel.setText("Video: " + vp.getChosenVideo().getName());
+				chosenVideoLabel.setText("Video: " + vm.getChosenVideo().getName());
 				enablePlayerControl(true);
 			}
 			
@@ -423,13 +422,13 @@ public class VidivoxGUI extends JFrame {
 	}
 
 	protected void createProgressTimer() {
-		progressTimer = new Timer(200, new ActionListener() {
+		progressTimer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				long currentTime = vp.getPlayer().getTime();
 
 				progressLabel.setText(TimeFormatter.formatLength(currentTime) + " / " + vp.getVideoLength());
-				videoSlider.setValue((int) vp.getPlayer().getTime());
+				videoSlider.setValue((int) vp.getCurrentTime());
 			}
 		});
 
@@ -446,7 +445,7 @@ public class VidivoxGUI extends JFrame {
 	}
 	
 	private void enableExportButton() {
-		if(vp.getChosenVideo() != null && vp.getChosenAudio() != null) {
+		if(vm.getChosenVideo() != null && vm.getChosenAudio() != null) {
 			videoExportButton.setEnabled(true);
 		}
 	}

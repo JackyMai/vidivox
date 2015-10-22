@@ -8,17 +8,15 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 /*
  * This class deals with the player/playerComponent and logic associated with the player. 
  * 
- * Authors: Helen Zhao, Jacky Mai
- * UPI: hzha587, jmai871
+ * Authors: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
  */
 
 public class VidivoxPlayer {
 	private final EmbeddedMediaPlayerComponent playerComponent;
-	protected static EmbeddedMediaPlayer player;
-	private File chosenVideo;
-	private File chosenAudio;
+	protected EmbeddedMediaPlayer player;
 	private String videoLength = "00:00";
-	private int defaultVolume = 90;
+	private int defaultVolume = 100;
 	private static int videoPaused = 0;
 	private int skipDirection = 0;
 
@@ -53,7 +51,7 @@ public class VidivoxPlayer {
 		player.mute(true);
 	}
 
-	public void playVideo() {
+	public void playVideo(File chosenVideo) {
 		videoPaused = 0;
 		player.playMedia(chosenVideo.getAbsolutePath());
 	}
@@ -70,28 +68,6 @@ public class VidivoxPlayer {
 		return player;
 	}
 	
-	public File getChosenAudio() {
-		return chosenAudio;
-	}
-
-	public void setChosenAudio(File chosenAudio) {
-		this.chosenAudio = chosenAudio;
-	}
-
-	public File getChosenVideo() {
-		return chosenVideo;
-	}
-
-	public void setChosenVideo(File chosenVideo) {
-		this.chosenVideo = chosenVideo;
-	}
-	
-	public void setChosenVideoTemp() {
-		File vidiTemp = new File(chosenVideo.getParent() + File.separator +"vidiTemp_JH.avi");
-		chosenVideo.renameTo(vidiTemp);
-		setChosenVideo(vidiTemp);
-	}
-	
 	public String getVideoLength() {
 		return videoLength;
 	}
@@ -100,6 +76,10 @@ public class VidivoxPlayer {
 		this.videoLength = videoLength;
 	}
 
+	public long getCurrentTime() {
+		return player.getTime();
+	}
+	
 	public int getDefaultVolume() {
 		return defaultVolume;
 	}

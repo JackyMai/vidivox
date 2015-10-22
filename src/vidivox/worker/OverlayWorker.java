@@ -1,53 +1,57 @@
 package vidivox.worker;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
-import vidivox.VidivoxPlayer;
+import vidivox.AudioTrack;
+import vidivox.VidivoxGUI;
 
-/*
+/**
  * OverlayWorker: This class is a SwingWorker that overlays an audio file 
- * onto the audio of a video file and saves the overlayed video as outputName
+ * onto the audio of a video file and saves the overlayed video as outputName.
  * 
- * Inputs: String videoName, String audioName, String outputName
+ * Inputs: String videoName, String audioName, String outputName.
  * 
- * Authors: Helen Zhao, Jacky Mai
- * UPI: hzha587, jmai871
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
  */
 public class OverlayWorker extends SwingWorker<Void, Void> {
+	private ArrayList<AudioTrack> audioList;
 	private String videoPath;
-	private String audioPath;
 	private String outputName;
 	private File desiredName;
-	private VidivoxPlayer vp;
 	private JDialog jd;
 	
-	public OverlayWorker(String videoPath, String audioPath, File desiredName, VidivoxPlayer vp) {
+	public OverlayWorker(String videoPath, ArrayList<AudioTrack> audioList, File desiredName) {
 		this.videoPath = videoPath;
-		this.audioPath = audioPath;
+		this.audioList = audioList;
 		this.desiredName = desiredName;
-		this.vp = vp;
 	}
 	
 	@Override
 	protected Void doInBackground() throws Exception {
-		JOptionPane jop = new JOptionPane("Processing the overlay as requested...", 
-				JOptionPane.INFORMATION_MESSAGE);
-		jd = jop.createDialog(vp.getPlayerComponent(), "Overlay operation");
-		jd.setModal(false);
-		jd.setVisible(true);
+		createInfoDialog();
 		
 		outputName = desiredName.getAbsolutePath();
 
-		String cmd = "ffmpeg -i '" + videoPath + "' -i '" + audioPath + "' -filter_complex 'amix=inputs=2' '" + outputName + "'";
+		String cmd = "ffmpeg -i '" + videoPath + "' ";
+		
+		for(int i=0; i<audioList.size(); i++) {
+			cmd += "-i '" + audioList.get(i).getAudioPath() + "' ";
+		}
+		
+		cmd += "-filter_complex 'amix=inputs=" + (audioList.size()+1) + "' '" + outputName + "'";
+		
+		System.out.println(cmd);
+		
+//		String cmd = "ffmpeg -i '" + videoPath + "' -i '" + audioPath + "' -filter_complex 'amix=inputs=" + audioList.size() + "' '" + outputName + "'";
 
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		process.waitFor();
-		
-		
 		
 		return null;
 	}
@@ -62,12 +66,20 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 			vidiTemp.delete();
 		}
 		
-		int returnValue = JOptionPane.showConfirmDialog(vp.getPlayerComponent(), "Successfully save as \"" + outputName + "\"\n"
+		int returnValue = JOptionPane.showConfirmDialog(VidivoxGUI.vp.getPlayerComponent(), "Successfully save as \"" + outputName + "\"\n"
 				+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
 		
 		if(returnValue == JOptionPane.YES_OPTION) {
-			vp.setChosenVideo(new File (outputName));
-			vp.playVideo();
+			VidivoxGUI.vm.setChosenVideo(new File (outputName));
+			VidivoxGUI.vp.playVideo(new File(outputName));
 		}
+	}
+	
+	private void createInfoDialog() {
+		JOptionPane jop = new JOptionPane("Exporting the video as requested", 
+				JOptionPane.INFORMATION_MESSAGE);
+		jd = jop.createDialog(VidivoxGUI.vp.getPlayerComponent(), "Overlay Operation");
+		jd.setModal(false);
+		jd.setVisible(true);
 	}
 }
