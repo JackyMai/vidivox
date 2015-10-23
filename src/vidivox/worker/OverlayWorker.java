@@ -1,17 +1,15 @@
 package vidivox.worker;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
-import vidivox.AudioTrack;
 import vidivox.VidivoxGUI;
 
 /**
  * OverlayWorker: This class is a SwingWorker that overlays an audio file 
- * onto the audio of a video file and saves the overlayed video as outputName.
+ * onto the audio of a video file and saves the overlaid video as outputName.
  * 
  * Inputs: String videoName, String audioName, String outputName.
  * 
@@ -19,13 +17,13 @@ import vidivox.VidivoxGUI;
  * Partner: Helen Zhao - hzha587
  */
 public class OverlayWorker extends SwingWorker<Void, Void> {
-	private ArrayList<AudioTrack> audioList;
+	private String[] audioList;
 	private String videoPath;
 	private String outputName;
 	private File desiredName;
 	private JDialog jd;
 	
-	public OverlayWorker(String videoPath, ArrayList<AudioTrack> audioList, File desiredName) {
+	public OverlayWorker(String videoPath, String[] audioList, File desiredName) {
 		this.videoPath = videoPath;
 		this.audioList = audioList;
 		this.desiredName = desiredName;
@@ -39,15 +37,13 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 
 		String cmd = "ffmpeg -i '" + videoPath + "' ";
 		
-		for(int i=0; i<audioList.size(); i++) {
-			cmd += "-i '" + audioList.get(i).getAudioPath() + "' ";
+		for(int i=0; i<audioList.length; i++) {
+			cmd += "-i '" + audioList[i] + "' ";
 		}
 		
-		cmd += "-filter_complex 'amix=inputs=" + (audioList.size()+1) + "' '" + outputName + "'";
+		cmd += "-filter_complex 'amix=inputs=" + (audioList.length+1) + "' '" + outputName + "'";
 		
 		System.out.println(cmd);
-		
-//		String cmd = "ffmpeg -i '" + videoPath + "' -i '" + audioPath + "' -filter_complex 'amix=inputs=" + audioList.size() + "' '" + outputName + "'";
 
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
@@ -60,11 +56,7 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	protected void done() {
 		jd.dispose();
 		
-		File vidiTemp = new File(desiredName.getParent() + File.separator + "vidiTemp_JH.avi");
-		
-		if(vidiTemp.exists()) {
-			vidiTemp.delete();
-		}
+		deleteTemp();
 		
 		int returnValue = JOptionPane.showConfirmDialog(VidivoxGUI.vp.getPlayerComponent(), "Successfully save as \"" + outputName + "\"\n"
 				+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
@@ -81,5 +73,13 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		jd = jop.createDialog(VidivoxGUI.vp.getPlayerComponent(), "Overlay Operation");
 		jd.setModal(false);
 		jd.setVisible(true);
+	}
+	
+	private void deleteTemp() {
+		File vidiTemp = new File(desiredName.getParent() + File.separator + "vidiTemp_JH.avi");
+		
+		if(vidiTemp.exists()) {
+			vidiTemp.delete();
+		}
 	}
 }
