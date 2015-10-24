@@ -71,7 +71,7 @@ public class VidivoxGUI extends JFrame {
 	private StatusPanel statusPanel = new StatusPanel(mainFrame);
 	private AudioControlPanel audioControlPanel;
 	private AudioFestivalPanel audioFestivalPanel;
-	private AudioScrollPanel audioScrollPanel;
+	private AudioScrollPanel audioScrollPanel = new AudioScrollPanel();
 	
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -145,15 +145,17 @@ public class VidivoxGUI extends JFrame {
 		gbc.weightx = 0.10;
 		gbc.weighty = 1;
 		
+		
 		// -------------------------- Audio Control Panel --------------------------
 		
-		audioControlPanel = new AudioControlPanel(mainFrame);
+		audioControlPanel = new AudioControlPanel(mainFrame, statusPanel, audioScrollPanel);
 		audioPanel.add(audioControlPanel, gbc);
 		
 		// ------------------------- Audio View Panel ---------------------------
 		
 		gbc.gridx = 1;
 		gbc.weightx = 0.9;
+		
 		JPanel audioViewPanel = new JPanel();
 		audioViewPanel.setLayout(new BoxLayout(audioViewPanel, BoxLayout.Y_AXIS));
 		audioPanel.add(audioViewPanel, gbc);
@@ -167,7 +169,6 @@ public class VidivoxGUI extends JFrame {
 		
 		// -------------------------- Comment Table Panel -------------------------------
 		
-		audioScrollPanel = new AudioScrollPanel();
 		audioViewPanel.add(audioScrollPanel);
 		
 		

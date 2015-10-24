@@ -12,14 +12,12 @@ import javax.swing.JPanel;
 
 import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
-import vidivox.helper.TimeFormatter;
 import vidivox.model.AudioTrack;
 
 public class AudioControlPanel extends JPanel {
 	private JButton exportButton;
 	
-	public AudioControlPanel(final JFrame mainFrame) {
-		
+	public AudioControlPanel(final JFrame mainFrame, final StatusPanel statusPanel, final AudioScrollPanel audioScrollPanel) {
 		this.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -31,16 +29,15 @@ public class AudioControlPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			if(FileOpener.openAudio(mainFrame)) {
-//				chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
+				statusPanel.setChosenAudioLabel("Audio track: " + VidivoxGUI.vm.getChosenAudio().getName());
 				
 				AudioTrack newTrack = new AudioTrack(VidivoxGUI.vm.getChosenAudio(), (int)VidivoxGUI.vp.getCurrentTime());
-				commentModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
+				audioScrollPanel.addAudioTrack(newTrack);
 				VidivoxGUI.vm.addAudioTrack(newTrack);
 				
 				enableExportButton();
 			}
-		}
-		});
+		}});
 		this.add(audioAddButton, gbc);
 		
 		JButton audioEditButton = new JButton("Edit");

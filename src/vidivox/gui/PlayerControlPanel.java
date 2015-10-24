@@ -39,7 +39,7 @@ public class PlayerControlPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(FileOpener.openVideo(mainFrame)) {
 					setPlayStatus();
-					enableExportButton();
+//					enableExportButton();
 				}
 			}
 		});

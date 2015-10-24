@@ -6,12 +6,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import vidivox.helper.TimeFormatter;
+import vidivox.model.AudioTrack;
+
 public class AudioScrollPanel extends JScrollPane {
+	private static final long serialVersionUID = 5235416544634631011L;
 	private JTable audioTrackTable;
 	private DefaultTableModel audioTrackModel;
 	
 	public AudioScrollPanel() {
 		audioTrackModel = new DefaultTableModel() {
+			private static final long serialVersionUID = 396235103200222964L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -24,5 +30,13 @@ public class AudioScrollPanel extends JScrollPane {
 //		JScrollPane audioScrollPanel = new JScrollPane(audioTrackTable);
 //		this.setPreferredSize(new Dimension(audioFestivalPanel.getPreferredSize().width, 86));
 		this.setPreferredSize(new Dimension(this.getPreferredSize().width, 86));
+	}
+	
+	protected DefaultTableModel getAudioTrackModel() {
+		return audioTrackModel;
+	}
+	
+	protected void addAudioTrack(AudioTrack newTrack) {
+		audioTrackModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
 	}
 }
