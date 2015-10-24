@@ -1,8 +1,13 @@
 package vidivox.worker;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.SwingWorker;
+
+import vidivox.gui.VidivoxGUI;
 import vidivox.model.AudioTrack;
 
 public class VidivoxWorker {
@@ -10,14 +15,24 @@ public class VidivoxWorker {
 		SaveMp3Worker smw = new SaveMp3Worker(message, desiredName);
 		smw.execute();
 	}
-	
-	public static void overlay(String videoPath, ArrayList<AudioTrack> audioList, File desiredName) {
-		OverlayWorker ow = new OverlayWorker(videoPath, audioList, desiredName);
-		ow.execute();
-	}
 
 	public static void festival(String text) {
 		FestivalWorker fw = new FestivalWorker(text);
 		fw.execute();
+	}
+	
+	public static void export(final String videoPath, final ArrayList<AudioTrack> audioList, final File desiredName) {
+		DelayWorker dw = new DelayWorker(audioList);
+		dw.execute();
+		dw.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if("state" == e.getPropertyName() && SwingWorker.StateValue.DONE == e.getNewValue()) {
+					String[] audioPath = VidivoxGUI.vm.getDelayedAudioList();
+					OverlayWorker ow = new OverlayWorker(videoPath, audioPath, desiredName);
+					ow.execute();
+				}
+			}
+		});
 	}
 }

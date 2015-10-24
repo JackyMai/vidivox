@@ -7,6 +7,7 @@ public class VidivoxModel {
 	private File chosenVideo;
 	private File chosenAudio;
 	private ArrayList<AudioTrack> audioList;
+	private String[] delayedAudioList;
 	
 	public VidivoxModel() {
 		audioList = new ArrayList<AudioTrack>();
@@ -48,5 +49,13 @@ public class VidivoxModel {
 	
 	public void removeAudioTrack(int index) {
 		audioList.remove(index);
+	}
+	
+	public String[] getDelayedAudioList() {
+		return delayedAudioList;
+	}
+	
+	public void setDelayedAudioList(String[] newList) {
+		this.delayedAudioList = newList;
 	}
 }
