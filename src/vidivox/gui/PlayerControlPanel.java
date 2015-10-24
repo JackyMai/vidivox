@@ -37,6 +37,7 @@ public class PlayerControlPanel extends JPanel {
 		
 		browseButton = new JButton("Browse");
 		browseButton.setMargin(new Insets(2,6,2,6));
+		browseButton.setToolTipText("Open video file");
 		browseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(FileOpener.openVideo(mainFrame)) {
@@ -48,6 +49,7 @@ public class PlayerControlPanel extends JPanel {
 		this.add(browseButton);
 
 		rewindButton = new JButton("<<");
+		rewindButton.setToolTipText("Rewind");
 		rewindButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setRewindStatus();
@@ -57,6 +59,7 @@ public class PlayerControlPanel extends JPanel {
 		this.add(rewindButton);
 
 		playButton = new JButton("▐ ▌");
+		playButton.setToolTipText("Play / Pause");
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (VidivoxPlayer.getVideoPaused() == 0) {
@@ -71,6 +74,7 @@ public class PlayerControlPanel extends JPanel {
 		this.add(playButton);
 
 		ffButton = new JButton(">>");
+		ffButton.setToolTipText("Fast-forward");
 		ffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setFastForwardStatus();
@@ -99,6 +103,7 @@ public class PlayerControlPanel extends JPanel {
 
 		final JButton volumeButton = new JButton("Volume");
 		volumeButton.setMargin(new Insets(2,6,2,6));
+		volumeButton.setToolTipText("Player volume");
 		volumeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				volumeMenu.show(volumeButton, volumeButton.getBounds().x - 200,
@@ -109,6 +114,7 @@ public class PlayerControlPanel extends JPanel {
 		
 		exportButton = new JButton("Export");
 		exportButton.setMargin(new Insets(2,6,2,6));
+		exportButton.setToolTipText("Merge audio tracks with chosen video file");
 		exportButton.setEnabled(false);
 		exportButton.addActionListener(new ActionListener() {
 			@Override
