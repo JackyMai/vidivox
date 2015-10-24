@@ -27,8 +27,6 @@ public class AudioScrollPanel extends JScrollPane {
 		audioTrackTable = new JTable(audioTrackModel);
 		
 		this.setViewportView(audioTrackTable);
-//		JScrollPane audioScrollPanel = new JScrollPane(audioTrackTable);
-//		this.setPreferredSize(new Dimension(audioFestivalPanel.getPreferredSize().width, 86));
 		this.setPreferredSize(new Dimension(this.getPreferredSize().width, 86));
 	}
 	
@@ -38,5 +36,13 @@ public class AudioScrollPanel extends JScrollPane {
 	
 	protected void addAudioTrack(AudioTrack newTrack) {
 		audioTrackModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
+	}
+	
+	protected int[] getSelectedRows() {
+		return audioTrackTable.getSelectedRows();
+	}
+	
+	protected void removeSelectedRow(int row) {
+		audioTrackModel.removeRow(row);
 	}
 }

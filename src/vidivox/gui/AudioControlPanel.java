@@ -5,7 +5,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -44,12 +46,22 @@ public class AudioControlPanel extends JPanel {
 		this.add(audioEditButton, gbc);
 		
 		JButton audioDeleteButton = new JButton("Delete");
+		audioDeleteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for(int selectedRow : audioScrollPanel.getSelectedRows()) {
+					audioScrollPanel.removeSelectedRow(selectedRow);
+					VidivoxGUI.vm.removeAudioTrack(selectedRow);
+				}
+			}
+		});
 		this.add(audioDeleteButton, gbc);
 		
 		exportButton = new JButton("Export");
-		exportButton.setMargin(new Insets(2,6,2,6));
+//		exportButton.setMargin(new Insets(2,6,2,6));
 		exportButton.setEnabled(false);
 		exportButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				FileSaver.exportFile(mainFrame, "video", null);
 			}
