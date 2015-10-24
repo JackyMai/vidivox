@@ -15,15 +15,16 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public class ProgressPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JLabel progressLabel;
 	private JSlider videoSlider;
 	
 	public ProgressPanel(JFrame mainFrame) {
 		this.setBackground(Color.decode("#F2F1F0"));
-		this.setBorder(new EmptyBorder(6, 9, 2, 9));
+		this.setBorder(new EmptyBorder(6, 10, 3, 6));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-		progressLabel = new JLabel("00:00");
+		progressLabel = new JLabel("00:00 / 00:00");
 		this.add(progressLabel);
 
 		this.add(Box.createRigidArea(new Dimension(5, 0)));

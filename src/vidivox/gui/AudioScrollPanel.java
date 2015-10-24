@@ -10,14 +10,13 @@ import vidivox.helper.TimeFormatter;
 import vidivox.model.AudioTrack;
 
 public class AudioScrollPanel extends JScrollPane {
-	private static final long serialVersionUID = 5235416544634631011L;
+	private static final long serialVersionUID = 1L;
 	private JTable audioTrackTable;
 	private DefaultTableModel audioTrackModel;
 	
+	@SuppressWarnings("serial")
 	public AudioScrollPanel() {
 		audioTrackModel = new DefaultTableModel() {
-			private static final long serialVersionUID = 396235103200222964L;
-
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;

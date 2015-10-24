@@ -1,6 +1,8 @@
 package vidivox.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,12 +16,6 @@ import vidivox.model.VidivoxPlayer;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -33,6 +29,7 @@ import java.awt.event.ActionEvent;
 public class VidivoxGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private final JFrame mainFrame = this;
+	private Dimension vidivoxDim = new Dimension(900, 760);
 	public static VidivoxPlayer vp;
 	public static VidivoxModel vm;
 	protected static Timer progressTimer;
@@ -40,17 +37,15 @@ public class VidivoxGUI extends JFrame {
 	private JPanel topPanel;
 	private ProgressPanel progressPanel;
 	private PlayerControlPanel playerControlPanel;
+	private AudioPanel audioPanel;
 	private StatusPanel statusPanel = new StatusPanel(mainFrame);
-	private AudioControlPanel audioControlPanel;
-	private AudioFestivalPanel audioFestivalPanel;
-	private AudioScrollPanel audioScrollPanel = new AudioScrollPanel();
 	
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
 	public VidivoxGUI() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("VIDIVOX");
-		setSize(950, 778);
+		setSize(vidivoxDim);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
@@ -85,6 +80,7 @@ public class VidivoxGUI extends JFrame {
 		JPanel playerPanel = new JPanel();
 		playerPanel.setLayout(new BorderLayout(0,0));
 		playerPanel.add(vp.getPlayerComponent(), BorderLayout.CENTER);
+		playerPanel.setPreferredSize(new Dimension(vidivoxDim.width, 500));
 		topPanel.add(playerPanel);
 		
 		
@@ -102,46 +98,8 @@ public class VidivoxGUI extends JFrame {
 		
 		// -------------------------- Audio Panel --------------------------
 		
-		JPanel audioPanel = new JPanel();
-		audioPanel.setLayout(new GridBagLayout());
-		audioPanel.setBorder(new CompoundBorder(new EmptyBorder(2, 10, 2, 10), new TitledBorder("Audio Tracks")));
-//		audioPanel.setBorder(new TitledBorder("Audio Tracks"));
-//		audioPanel.setBorder(border);
+		audioPanel = new AudioPanel(mainFrame, statusPanel, playerControlPanel);
 		topPanel.add(audioPanel);
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 0.10;
-		gbc.weighty = 1;
-		
-		
-		// -------------------------- Audio Control Panel --------------------------
-		
-		audioControlPanel = new AudioControlPanel(mainFrame, statusPanel, audioScrollPanel);
-		audioPanel.add(audioControlPanel, gbc);
-		
-		// ------------------------- Audio View Panel ---------------------------
-		
-		gbc.gridx = 1;
-		gbc.weightx = 0.9;
-		
-		JPanel audioViewPanel = new JPanel();
-		audioViewPanel.setLayout(new BoxLayout(audioViewPanel, BoxLayout.Y_AXIS));
-		audioPanel.add(audioViewPanel, gbc);
-		
-		
-		// --------------------------- Comment Input Panel ----------------------------
-		
-		audioFestivalPanel = new AudioFestivalPanel(mainFrame);
-		audioViewPanel.add(audioFestivalPanel);
-
-		
-		// -------------------------- Comment Table Panel -------------------------------
-		
-		audioViewPanel.add(audioScrollPanel);
-		
 		
 		// ------------------- Status Panel -----------------------------
 		

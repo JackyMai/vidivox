@@ -9,13 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 public class StatusPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JLabel playerStatusLabel ;
 	private JLabel chosenVideoLabel;
 	private JLabel chosenAudioLabel;
 	
 	public StatusPanel(JFrame mainFrame) {
 		this.setBackground(Color.decode("#F2F1F0"));
-		this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 3));
 
 		playerStatusLabel = new JLabel("Status: stopped");
 		this.add(playerStatusLabel);

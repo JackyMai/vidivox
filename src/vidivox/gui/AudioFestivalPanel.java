@@ -2,7 +2,6 @@ package vidivox.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,11 +20,12 @@ import vidivox.helper.TextLimit;
 import vidivox.worker.VidivoxWorker;
 
 public class AudioFestivalPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JTextField festivalTextField;
 	
 	public AudioFestivalPanel(final JFrame mainFrame) {
 		this.setBackground(Color.decode("#F2F1F0"));
-		this.setBorder(new EmptyBorder(0, 10, 0, 10));
+		this.setBorder(new EmptyBorder(0, 0, 3, 2));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		JLabel commentLabel = new JLabel("Comment");
