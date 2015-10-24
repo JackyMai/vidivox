@@ -43,6 +43,10 @@ public class VidivoxModel {
 		return audioList;
 	}
 	
+	public int getAudioListSize() {
+		return audioList.size();
+	}
+	
 	public void addAudioTrack(AudioTrack newAudio) {
 		audioList.add(newAudio);
 	}

@@ -1,17 +1,15 @@
 package vidivox.worker;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import vidivox.gui.VidivoxGUI;
-import vidivox.model.AudioTrack;
 
 /**
  * OverlayWorker: This class is a SwingWorker that overlays an audio file 
- * onto the audio of a video file and saves the overlayed video as outputName.
+ * onto the audio of a video file and saves the overlaid video as outputName.
  * 
  * Inputs: String videoName, String audioName, String outputName.
  * 

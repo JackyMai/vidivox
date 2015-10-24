@@ -9,10 +9,10 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import vidivox.gui.VidivoxGUI;
 
 /* 
- * Main: This class acts as an entry point and initialises the program 
+ * Main: This class acts as an entry point and initializes the program 
  * 
- * Authors: Jacky Mai
- * UPI: jmai871
+ * Authors: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
  */
 public class Main {
 	public static void main(String[] args) {
