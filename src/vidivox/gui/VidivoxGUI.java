@@ -16,6 +16,7 @@ import vidivox.filechooser.FileSaver;
 import vidivox.helper.GenericHelper;
 import vidivox.helper.TextLimit;
 import vidivox.helper.TimeFormatter;
+import vidivox.model.AudioTrack;
 import vidivox.model.VidivoxModel;
 import vidivox.model.VidivoxPlayer;
 import vidivox.worker.VidivoxWorker;
@@ -27,11 +28,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.plaf.metal.MetalSliderUI;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -44,6 +49,8 @@ import javax.swing.JSlider;
 import javax.swing.JTable;
 
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JSeparator;
 
 /* VideoPlayerGUI: This class deals with the GUI aspect of the video player from BigBuckPlayer 
@@ -62,10 +69,9 @@ public class VidivoxGUI extends JFrame {
 	private ProgressPanel progressPanel;
 	private PlayerControlPanel playerControlPanel;
 	private StatusPanel statusPanel = new StatusPanel(mainFrame);
+	private AudioControlPanel audioControlPanel;
 	private AudioFestivalPanel audioFestivalPanel;
-	private JTextField commentTextField;
-	private JTable commentTable;
-	private DefaultTableModel commentModel;
+	private AudioScrollPanel audioScrollPanel;
 	
 	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
 
@@ -122,39 +128,47 @@ public class VidivoxGUI extends JFrame {
 		playerControlPanel = new PlayerControlPanel(mainFrame, statusPanel);
 		topPanel.add(playerControlPanel);
 		
-
-		// ------------------------- Audio Track Panel ---------------------------
 		
-		JPanel audioTrackPanel = new JPanel();
-		audioTrackPanel.setLayout(new BoxLayout(audioTrackPanel, BoxLayout.Y_AXIS));
-		topPanel.add(audioTrackPanel);
+		// -------------------------- Audio Panel --------------------------
+		
+		JPanel audioPanel = new JPanel();
+		audioPanel.setLayout(new GridBagLayout());
+		audioPanel.setBorder(new CompoundBorder(new EmptyBorder(2, 10, 2, 10), new TitledBorder("Audio Tracks")));
+//		audioPanel.setBorder(new TitledBorder("Audio Tracks"));
+//		audioPanel.setBorder(border);
+		topPanel.add(audioPanel);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 0.10;
+		gbc.weighty = 1;
+		
+		// -------------------------- Audio Control Panel --------------------------
+		
+		audioControlPanel = new AudioControlPanel(mainFrame);
+		audioPanel.add(audioControlPanel, gbc);
+		
+		// ------------------------- Audio View Panel ---------------------------
+		
+		gbc.gridx = 1;
+		gbc.weightx = 0.9;
+		JPanel audioViewPanel = new JPanel();
+		audioViewPanel.setLayout(new BoxLayout(audioViewPanel, BoxLayout.Y_AXIS));
+		audioPanel.add(audioViewPanel, gbc);
 		
 		
 		// --------------------------- Comment Input Panel ----------------------------
 		
 		audioFestivalPanel = new AudioFestivalPanel(mainFrame);
-		audioTrackPanel.add(audioFestivalPanel);
+		audioViewPanel.add(audioFestivalPanel);
 
 		
 		// -------------------------- Comment Table Panel -------------------------------
 		
-		JPanel commentTablePanel = new JPanel();
-		commentTablePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 6));
-		audioTrackPanel.add(commentTablePanel);
-		
-		commentModel = new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		commentModel.setColumnIdentifiers(new String[]{"Audio Track", "Insert At"});
-		commentTable = new JTable(commentModel);
-		
-		JScrollPane commentScrollPane = new JScrollPane(commentTable);
-		commentScrollPane.setViewportView(commentTable);
-		commentScrollPane.setPreferredSize(new Dimension(audioFestivalPanel.getPreferredSize().width-4, 86));
-		commentTablePanel.add(commentScrollPane);
+		audioScrollPanel = new AudioScrollPanel();
+		audioViewPanel.add(audioScrollPanel);
 		
 		
 		// ------------------- Status Panel -----------------------------
