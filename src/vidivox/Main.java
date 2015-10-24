@@ -6,6 +6,7 @@ import com.sun.jna.NativeLibrary;
 
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import vidivox.gui.VidivoxGUI;
 
 /* 
  * Main: This class acts as an entry point and initialises the program 

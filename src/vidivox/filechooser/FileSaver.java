@@ -7,9 +7,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import vidivox.AudioTrack;
-import vidivox.VidivoxGUI;
-import vidivox.VidivoxWorker;
+import vidivox.gui.VidivoxGUI;
+import vidivox.model.AudioTrack;
+import vidivox.worker.VidivoxWorker;
 
 public class FileSaver extends FileChooser {
 	/**

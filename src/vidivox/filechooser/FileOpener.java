@@ -4,7 +4,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import vidivox.VidivoxGUI;
+
+import vidivox.gui.VidivoxGUI;
 
 public class FileOpener extends FileChooser {
 	private static boolean openMedia(JFrame mainFrame, String fileType) {

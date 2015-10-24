@@ -6,8 +6,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
-import vidivox.AudioTrack;
-import vidivox.VidivoxGUI;
+import vidivox.gui.VidivoxGUI;
+import vidivox.model.AudioTrack;
 
 /**
  * OverlayWorker: This class is a SwingWorker that overlays an audio file 

@@ -2,7 +2,8 @@ package vidivox.worker;
 import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-import vidivox.VidivoxGUI;
+
+import vidivox.gui.VidivoxGUI;
 
 /* SaveMp3Worker: This class is a SwingWorker that saves a message to temporary wav 
  * output using bash, then converts the wav output to mp3 through piping.
