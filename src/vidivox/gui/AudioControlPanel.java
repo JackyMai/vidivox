@@ -27,7 +27,7 @@ public class AudioControlPanel extends JPanel {
 		gbc.gridy = GridBagConstraints.RELATIVE;
 		
 		JButton audioAddButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "add.png"));
-		removeButtonStyle(audioAddButton);
+		audioAddButton.setToolTipText("Add new audio tracks");
 		audioAddButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -41,21 +41,23 @@ public class AudioControlPanel extends JPanel {
 				playerControlPanel.enableExportButton();
 			}
 		}});
+		removeButtonStyle(audioAddButton);
 		this.add(audioAddButton, gbc);
 		
 		JButton audioEditButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "edit.png"));
-		removeButtonStyle(audioEditButton);
+		audioEditButton.setToolTipText("Edit insert time of selected tracks");
 		audioEditButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 			}
 		});
+		removeButtonStyle(audioEditButton);
 		this.add(audioEditButton, gbc);
 		
-		JButton audioDeleteButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "delete.png"));
-		removeButtonStyle(audioDeleteButton);
-		audioDeleteButton.addActionListener(new ActionListener() {
+		JButton audioRemoveButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "delete.png"));
+		audioRemoveButton.setToolTipText("Remove selected audio tracks");
+		audioRemoveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for(int selectedRow : audioScrollPanel.getSelectedRows()) {
@@ -64,7 +66,8 @@ public class AudioControlPanel extends JPanel {
 				}
 			}
 		});
-		this.add(audioDeleteButton, gbc);
+		removeButtonStyle(audioRemoveButton);
+		this.add(audioRemoveButton, gbc);
 	}
 	
 	protected void removeButtonStyle(JButton button) {
