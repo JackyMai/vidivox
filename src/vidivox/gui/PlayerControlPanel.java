@@ -1,6 +1,6 @@
 package vidivox.gui;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -8,38 +8,40 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.BoxLayout;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
-import javax.swing.border.EmptyBorder;
 
 import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
 import vidivox.model.VidivoxPlayer;
 
 public class PlayerControlPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private StatusPanel statusPanel;
 	private JButton browseButton;
 	private JButton rewindButton;
 	private JButton playButton;
 	private JButton ffButton;
+	private JButton exportButton;
 	private JSlider volumeSlider;
 	
 	public PlayerControlPanel(final JFrame mainFrame, StatusPanel statusPanel) {
 		this.statusPanel = statusPanel;
-		this.setBorder(new EmptyBorder(0, 10, 0, 10));
-		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 3));
+		
+		this.add(Box.createRigidArea(new Dimension(0, 0)));
+		
 		browseButton = new JButton("Browse");
 		browseButton.setMargin(new Insets(2,6,2,6));
 		browseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(FileOpener.openVideo(mainFrame)) {
 					setPlayStatus();
-//					enableExportButton();
+					enableExportButton();
 				}
 			}
 		});
@@ -104,6 +106,17 @@ public class PlayerControlPanel extends JPanel {
 			}
 		});
 		this.add(volumeButton);
+		
+		exportButton = new JButton("Export");
+		exportButton.setMargin(new Insets(2,6,2,6));
+		exportButton.setEnabled(false);
+		exportButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FileSaver.exportFile(mainFrame, "video", null);
+			}
+		});
+		this.add(exportButton);
 	}
 	
 	public int getVolumeSliderValue() {
@@ -146,17 +159,13 @@ public class PlayerControlPanel extends JPanel {
 		this.ffButton.setEnabled(set);
 	}
 	
-//	final JPopupMenu openMenu = new JPopupMenu();
-
-//	JMenuItem openVideoMenuItem = new JMenuItem("Video file");
-//	JMenuItem openAudioMenuItem = new JMenuItem("Audio track");
-//	openMenu.add(openVideoMenuItem);
-//	openMenu.add(openAudioMenuItem);
-
-//	browseBtn.addActionListener(new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//			openMenu.show(browseBtn, browseBtn.getBounds().x,
-//					browseBtn.getBounds().y + browseBtn.getHeight());
-//		}
-//	});
+	protected JButton getExportButton() {
+		return exportButton;
+	}
+	
+	protected void enableExportButton() {
+		if(VidivoxGUI.vm.getChosenVideo() != null && VidivoxGUI.vm.getChosenAudio() != null) {
+			exportButton.setEnabled(true);
+		}
+	}
 }
