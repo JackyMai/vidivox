@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
+import javax.swing.border.EmptyBorder;
 
 import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
@@ -24,14 +26,12 @@ public class PlayerControlPanel extends JPanel {
 	private JButton rewindButton;
 	private JButton playButton;
 	private JButton ffButton;
-	private JButton exportButton;
 	private JSlider volumeSlider;
 	
 	public PlayerControlPanel(final JFrame mainFrame, StatusPanel statusPanel) {
 		this.statusPanel = statusPanel;
-		
-		this.setBackground(Color.decode("#F2F1F0"));
-		this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 6));
+		this.setBorder(new EmptyBorder(0, 10, 0, 10));
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
 		browseButton = new JButton("Browse");
 		browseButton.setMargin(new Insets(2,6,2,6));
@@ -104,17 +104,6 @@ public class PlayerControlPanel extends JPanel {
 			}
 		});
 		this.add(volumeButton);
-
-		exportButton = new JButton("Export");
-		exportButton.setMargin(new Insets(2,6,2,6));
-		exportButton.setEnabled(false);
-		exportButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				FileSaver.exportFile(mainFrame, "video", null);
-			}
-		});
-		this.add(exportButton);
-
 	}
 	
 	public int getVolumeSliderValue() {
@@ -157,12 +146,6 @@ public class PlayerControlPanel extends JPanel {
 		this.ffButton.setEnabled(set);
 	}
 	
-	protected void enableExportButton() {
-		if(VidivoxGUI.vm.getChosenVideo() != null && VidivoxGUI.vm.getChosenAudio() != null) {
-			exportButton.setEnabled(true);
-		}
-	}
-	
 //	final JPopupMenu openMenu = new JPopupMenu();
 
 //	JMenuItem openVideoMenuItem = new JMenuItem("Video file");
@@ -174,19 +157,6 @@ public class PlayerControlPanel extends JPanel {
 //		public void actionPerformed(ActionEvent e) {
 //			openMenu.show(browseBtn, browseBtn.getBounds().x,
 //					browseBtn.getBounds().y + browseBtn.getHeight());
-//		}
-//	});
-
-//	openAudioMenuItem.addActionListener(new ActionListener() {
-//		public void actionPerformed(ActionEvent e) {
-//			if(FileOpener.openAudio(mainFrame)) {
-////				chosenAudioLabel.setText("Audio track: " + vp.getChosenAudio().getName());
-//				AudioTrack newTrack = new AudioTrack(vm.getChosenAudio(), (int)vp.getCurrentTime());
-//				commentModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
-//				vm.addAudioTrack(newTrack);
-//				
-//				enableExportButton();
-//			}
 //		}
 //	});
 }
