@@ -15,8 +15,8 @@ import javax.swing.JTextField;
 import vidivox.helper.GenericHelper;
 
 /**
- * This class will create a customized JOptionPane which checks whether the new insert time entered
- * by the user is valid or not.
+ * This class creates a customised JOptionPane which checks whether
+ * the new insert time entered by the user is valid or not.
  * Reference: http://stackoverflow.com/a/13055405
  * 
  * Author: Jacky Mai - jmai871

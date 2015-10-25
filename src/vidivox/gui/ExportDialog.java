@@ -11,6 +11,15 @@ import javax.swing.JProgressBar;
 
 import vidivox.worker.OverlayWorker;
 
+/**
+ * This class will create a customised JOptionPane that informs the user of the
+ * export operation with a message and a progress bar and allows the user the
+ * to cancel the operation.
+ * Reference: http://stackoverflow.com/a/13055405
+ * 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class ExportDialog extends JDialog implements PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 	private JOptionPane exportOptionPane;
@@ -19,15 +28,18 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 	private OverlayWorker ow;
 	
 	public ExportDialog(JFrame mainFrame, String videoPath, File desiredName) {
+		// Instantiates an OverlayWorker to start the export operation.
 		String[] audioPath = VidivoxGUI.vm.getDelayedAudioList();
 		ow = new OverlayWorker(this, videoPath, audioPath, desiredName);
 		ow.execute();
 		
-		String message = "Exporting the video as requested";
+		// Setting up the instructions to help the user to enter the correct insert time
+		String message = "Exporting " + desiredName.getName() + " as requsted.";
+		String message2 = "Please give it moment, this shouldn't take long.";
 		
 		progressBar.setIndeterminate(true);
 		
-		Object[] structure = {message, progressBar};
+		Object[] structure = {message, message2, progressBar};
 		Object[] options = {cancelButton};
 		
 		// Setting up the JOptionPane which will display the labels, 
@@ -72,6 +84,8 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 				return;
 			}
 			
+			// If the cancel button is pressed, cancel the overlay worker
+			// and dispose the window.
 			if(cancelButton.equals(value)) {
 				ow.cancel(true);
 				dispose();
