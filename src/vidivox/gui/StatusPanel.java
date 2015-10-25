@@ -30,7 +30,7 @@ public class StatusPanel extends JPanel {
 		JSeparator separator_1 = new JSeparator(JSeparator.VERTICAL);
 		this.add(separator_1);
 
-		chosenAudioLabel = new JLabel("Audio Tracks: none");
+		chosenAudioLabel = new JLabel("Audio Tracks: 0");
 		this.add(chosenAudioLabel);
 	}
 
