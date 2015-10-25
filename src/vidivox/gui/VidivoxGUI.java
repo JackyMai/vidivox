@@ -21,7 +21,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
-/* VideoPlayerGUI: This class deals with the GUI aspect of the video player from BigBuckPlayer 
+/**
+ * This class deals with the GUI aspect of the entire Vidivox program.
+ * But rather than showing all the details it only describes the main structure
+ * and layout of the various panels.
  * 
  * Authors Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
@@ -49,6 +52,11 @@ public class VidivoxGUI extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
+		/*
+		 * Adds a WindowListener to the JFrame.
+		 * Instead of exiting immediately when the user tries to close the window,
+		 * the user will be greeted with a JOptionPane asking for confirmation.
+		 */
 		mainFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -69,13 +77,15 @@ public class VidivoxGUI extends JFrame {
 		
 		GenericHelper.createDir();
 		
-		// ------------------------ Top Panel ----------------------------------
+		
+		// -------------------------- Top Panel --------------------------
 
 		topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		mainFrame.add(topPanel);
 		
-		// -------------------------- Player Panel -----------------------------
+		
+		// -------------------------- Player Panel --------------------------
 		
 		JPanel playerPanel = new JPanel();
 		playerPanel.setLayout(new BorderLayout(0,0));
@@ -84,13 +94,13 @@ public class VidivoxGUI extends JFrame {
 		topPanel.add(playerPanel);
 		
 		
-		// ------------------------ Progress Panel ------------------------------
+		// -------------------------- Progress Panel --------------------------
 		
 		progressPanel = new ProgressPanel(mainFrame);
 		topPanel.add(progressPanel);
 
 		
-		// ---------------------- Controller Panel -----------------------------
+		// -------------------------- Controller Panel --------------------------
 		
 		playerControlPanel = new PlayerControlPanel(mainFrame, statusPanel);
 		topPanel.add(playerControlPanel);
@@ -101,14 +111,18 @@ public class VidivoxGUI extends JFrame {
 		audioPanel = new AudioPanel(mainFrame, statusPanel, playerControlPanel);
 		topPanel.add(audioPanel);
 		
-		// ------------------- Status Panel -----------------------------
+		
+		// -------------------------- Status Panel --------------------------
 		
 		topPanel.add(statusPanel);
 
 		
-		// ------------------------- Player Setup ---------------------------
-
+		// -------------------------- Player Setup --------------------------
+		
+		// Adds a listener for the media player to notify for various events.
 		vp.getPlayer().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+			// Updates the maximum value of the video slider when the length of the
+			// video has changed, such as opening a new video.
 			@Override
 			public void lengthChanged(MediaPlayer player, long newTime) {
 				progressPanel.setMaxSliderValue((int) newTime);
@@ -116,12 +130,14 @@ public class VidivoxGUI extends JFrame {
 				vp.setVideoDuration((int)newTime);
 			}
 			
+			// Updates the chosen video label on the status panel to the latest video file.
 			@Override
 			public void opening(MediaPlayer player) {
 				statusPanel.setChosenVideoLabel("Video: " + vm.getChosenVideo().getName());
 				playerControlPanel.enablePlayerControl(true);
 			}
 			
+			// Updates the various GUI elements when the video finishes playing.
 			@Override
 			public void finished(MediaPlayer player) {
 				playerControlPanel.setStoppedStatus();
@@ -136,8 +152,11 @@ public class VidivoxGUI extends JFrame {
 	}
 	
 	
-	// ------------------- Timer creation methods --------------------------
-
+	// -------------------------- Timer Creation Methods --------------------------
+	
+	/**
+	 * Creates a timer for the fast-forward and rewind functionality of the player.
+	 */
 	protected void createSkipTimer() {
 		skipTimer = new Timer(50, new ActionListener() {
 			@Override
@@ -146,7 +165,11 @@ public class VidivoxGUI extends JFrame {
 			}
 		});
 	}
-
+	
+	/**
+	 * Creates a timer for updating the video slider and video label for the player
+	 * depending on the current position in the video.
+	 */
 	protected void createProgressTimer() {
 		progressTimer = new Timer(100, new ActionListener() {
 			@Override
