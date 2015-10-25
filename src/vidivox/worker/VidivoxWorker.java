@@ -11,6 +11,11 @@ import javax.swing.SwingWorker;
 import vidivox.gui.ExportDialog;
 import vidivox.model.AudioTrack;
 
+/**
+ * 
+ * @author jacky
+ *
+ */
 public class VidivoxWorker {
 	public static void saveMp3File(String message, File desiredName) {
 		SaveMp3Worker smw = new SaveMp3Worker(message, desiredName);
