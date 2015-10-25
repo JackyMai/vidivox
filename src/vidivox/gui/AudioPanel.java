@@ -50,8 +50,9 @@ public class AudioPanel extends JPanel {
 		audioViewPanel.add(audioFestivalPanel);
 
 		
-		// -------------------------- Audio View Panel -------------------------------
+		// -------------------------- Audio Scroll Panel -------------------------------
 		
+		audioScrollPanel.getAudioControlPanel(audioControlPanel);
 		audioViewPanel.add(audioScrollPanel);
 	}
 

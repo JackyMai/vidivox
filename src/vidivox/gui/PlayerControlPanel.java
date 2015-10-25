@@ -19,6 +19,14 @@ import vidivox.filechooser.FileOpener;
 import vidivox.filechooser.FileSaver;
 import vidivox.model.VidivoxPlayer;
 
+/**
+ * This class contains a JPanel which has all of the main controls for the Vidivox program.
+ * This includes various buttons such as browse, play/pause, volume control as well as
+ * the export button which merges all of the added audio tracks with the chosen video file.
+ * 
+ * Authors: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class PlayerControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private StatusPanel statusPanel;
@@ -129,6 +137,11 @@ public class PlayerControlPanel extends JPanel {
 		return volumeSlider.getValue();
 	}
 	
+	// -------------------------- Status Manipulation Methods --------------------------
+	// This section of methods will set the Vidivox player into a certain status.
+	// For example the setPlayStatus will stop the skipTimer and set button text and labels
+	// correctly to inform the user that the player is playing normally.
+	
 	public void setPlayStatus() {
 		VidivoxGUI.skipTimer.stop();
 		playButton.setText("▐ ▌");
@@ -159,6 +172,11 @@ public class PlayerControlPanel extends JPanel {
 		statusPanel.setPlayerStatusLabel("Status: rewind");
 	}
 	
+	/**
+	 * Enables/disables the rewind, play and fast-forward buttons depending
+	 * on the boolean input provided.
+	 * @param set - true if you wish to enable the button or false the otherwise
+	 */
 	protected void enablePlayerControl(boolean set) {
 		this.rewindButton.setEnabled(set);
 		this.playButton.setEnabled(set);
@@ -169,9 +187,14 @@ public class PlayerControlPanel extends JPanel {
 		return exportButton;
 	}
 	
+	/**
+	 * 
+	 */
 	protected void enableExportButton() {
-		if(VidivoxGUI.vm.getChosenVideo() != null && VidivoxGUI.vm.getChosenAudio() != null) {
+		if(VidivoxGUI.vm.getChosenVideo() != null && VidivoxGUI.vm.getAudioListSize() != 0) {
 			exportButton.setEnabled(true);
+		} else {
+			exportButton.setEnabled(false);
 		}
 	}
 }

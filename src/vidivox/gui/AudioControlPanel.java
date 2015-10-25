@@ -18,6 +18,8 @@ import vidivox.model.AudioTrack;
 
 public class AudioControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private JButton audioEditButton;
+	private JButton audioRemoveButton;
 
 	public AudioControlPanel(final JFrame mainFrame, final StatusPanel statusPanel, 
 			final AudioScrollPanel audioScrollPanel, final PlayerControlPanel playerControlPanel) {
@@ -41,7 +43,7 @@ public class AudioControlPanel extends JPanel {
 				AudioTrack newTrack = new AudioTrack(VidivoxGUI.vm.getChosenAudio(), (int)VidivoxGUI.vp.getCurrentTime());
 				audioScrollPanel.addAudioTrack(newTrack);
 				VidivoxGUI.vm.addAudioTrack(newTrack);
-				
+				enableRemoveButton();
 				playerControlPanel.enableExportButton();
 			}
 		}});
@@ -51,8 +53,9 @@ public class AudioControlPanel extends JPanel {
 		
 		// ------------------------------ Audio Edit Button ------------------------------
 		
-		JButton audioEditButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "edit.png"));
+		audioEditButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "edit.png"));
 		audioEditButton.setToolTipText("Edit insert time of selected tracks");
+		audioEditButton.setEnabled(false);
 		audioEditButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -66,7 +69,7 @@ public class AudioControlPanel extends JPanel {
 		
 		// ------------------------------ Audio Remove Button ------------------------------
 		
-		JButton audioRemoveButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "delete.png"));
+		audioRemoveButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "delete.png"));
 		audioRemoveButton.setToolTipText("Remove selected audio tracks");
 		audioRemoveButton.addActionListener(new ActionListener() {
 			@Override
@@ -76,11 +79,27 @@ public class AudioControlPanel extends JPanel {
 					audioScrollPanel.removeSelectedRow(selectedRows[i]);
 					VidivoxGUI.vm.removeAudioTrack(selectedRows[i]);
 					statusPanel.setChosenAudioLabel("Audio Tracks: " + String.valueOf(VidivoxGUI.vm.getAudioListSize()));
+					enableRemoveButton();
+					playerControlPanel.enableExportButton();
 				}
 			}
 		});
 		removeButtonStyle(audioRemoveButton);
 		this.add(audioRemoveButton, gbc);
+		
+		enableRemoveButton();
+	}
+	
+	protected void enableEditButton(boolean set) {
+		audioEditButton.setEnabled(set);
+	}
+	
+	protected void enableRemoveButton() {
+		if(VidivoxGUI.vm.getAudioListSize() != 0) {
+			audioRemoveButton.setEnabled(true);
+		} else {
+			audioRemoveButton.setEnabled(false);
+		}
 	}
 	
 	protected void removeButtonStyle(JButton button) {

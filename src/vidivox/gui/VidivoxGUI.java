@@ -43,7 +43,7 @@ public class VidivoxGUI extends JFrame {
 	private AudioPanel audioPanel;
 	private StatusPanel statusPanel = new StatusPanel(mainFrame);
 	
-	// -------- Constructor: creates the frame, panels, buttons, etc. ---------
+	// -------------------------- Constructor --------------------------
 
 	public VidivoxGUI() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
