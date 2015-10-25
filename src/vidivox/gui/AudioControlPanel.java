@@ -60,9 +60,10 @@ public class AudioControlPanel extends JPanel {
 		audioRemoveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(int selectedRow : audioScrollPanel.getSelectedRows()) {
-					audioScrollPanel.removeSelectedRow(selectedRow);
-					VidivoxGUI.vm.removeAudioTrack(selectedRow);
+				int[] selectedRows = audioScrollPanel.getSelectedRows();
+				for(int i=selectedRows.length-1; i>=0; i--) {
+					audioScrollPanel.removeSelectedRow(selectedRows[i]);
+					VidivoxGUI.vm.removeAudioTrack(selectedRows[i]);
 				}
 			}
 		});
