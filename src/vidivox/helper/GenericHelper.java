@@ -11,12 +11,22 @@ public class GenericHelper {
 	}
 	
 	public static boolean checkValidInsertTime(String newTime) {
-		int videoLength = VidivoxGUI.vp.getVideoDuration();
-		int newTimeInMilli = TimeFormatter.stringToMilli(newTime);
+		String minTimePattern = "([0-9]{0,2}):([0-5])([0-9])";
+		String hourTimePattern = minTimePattern + ":([0-5])([0-9])";
 		
-		if(newTimeInMilli >= 0 && newTimeInMilli <= videoLength) {
-			return true;
-		}
+		String[] newLength = newTime.split(":");
+		String[] matchColon = VidivoxGUI.vp.getVideoLength().split(":");
+		
+		int videoLength = VidivoxGUI.vp.getVideoDuration();
+		
+		if(newLength.length == matchColon.length && 
+			(newTime.matches(minTimePattern) || newTime.matches(hourTimePattern))) {
+				int newTimeInMilli = TimeFormatter.stringToMilli(newTime);
+				
+				if(newTimeInMilli >= 0 && newTimeInMilli <= videoLength) {
+					return true;
+				}
+			}
 		
 		return false;
 	}

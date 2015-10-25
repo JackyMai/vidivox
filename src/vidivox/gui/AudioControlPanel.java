@@ -45,6 +45,9 @@ public class AudioControlPanel extends JPanel {
 		removeButtonStyle(audioAddButton);
 		this.add(audioAddButton, gbc);
 		
+		
+		// ------------------------------ Audio Edit Button ------------------------------
+		
 		JButton audioEditButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "edit.png"));
 		audioEditButton.setToolTipText("Edit insert time of selected tracks");
 		audioEditButton.addActionListener(new ActionListener() {
