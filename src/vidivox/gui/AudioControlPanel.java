@@ -75,6 +75,7 @@ public class AudioControlPanel extends JPanel {
 				for(int i=selectedRows.length-1; i>=0; i--) {
 					audioScrollPanel.removeSelectedRow(selectedRows[i]);
 					VidivoxGUI.vm.removeAudioTrack(selectedRows[i]);
+					statusPanel.setChosenAudioLabel("Audio Tracks: " + String.valueOf(VidivoxGUI.vm.getAudioListSize()));
 				}
 			}
 		});
