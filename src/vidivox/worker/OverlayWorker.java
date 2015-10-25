@@ -1,11 +1,13 @@
 package vidivox.worker;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import vidivox.gui.ExportDialog;
 import vidivox.gui.VidivoxGUI;
+import vidivox.helper.GenericHelper;
 
 /**
  * OverlayWorker: This class is a SwingWorker that overlays an audio file 
@@ -22,6 +24,8 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	private String videoPath;
 	private String outputName;
 	private File desiredName;
+	private Process process;
+	private int PID;
 	
 	public OverlayWorker(ExportDialog exportDialog, String videoPath, String[] audioList, File desiredName) {
 		this.exportDialog = exportDialog;
@@ -32,7 +36,6 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
-		
 		outputName = desiredName.getAbsolutePath();
 
 		String cmd = "ffmpeg -i '" + videoPath + "' ";
@@ -46,7 +49,10 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		System.out.println(cmd);
 
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
-		Process process = builder.start();
+		process = builder.start();
+		
+		PID = GenericHelper.getPID(process);
+		
 		process.waitFor();
 		
 		return null;
@@ -58,7 +64,18 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		
 		deleteOriginal();
 		
-		if(!this.isCancelled()) {
+		if(this.isCancelled()) {
+			String kill = "kill " + PID;
+			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", kill);
+			
+			try {
+				builder.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			deleteUnfinished();
+		} else {
 			int returnValue = JOptionPane.showConfirmDialog(exportDialog.getParent(), "Successfully save as \"" + outputName + "\"\n"
 					+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
 			
@@ -76,4 +93,11 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 			vidiTemp.delete();
 		}
 	}
+	
+	private void deleteUnfinished() {
+		if(desiredName.exists()) {
+			desiredName.delete();
+		}
+	}
+	
 }

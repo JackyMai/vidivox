@@ -1,6 +1,7 @@
 package vidivox.helper;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 import vidivox.gui.VidivoxGUI;
 
@@ -52,5 +53,35 @@ public class GenericHelper {
 			}
 		
 		return false;
+	}
+	
+	/**
+	 * This method is the hack that will return the PID of a UNIX process.
+	 * @param process - the process that you want to obtain the PID for
+	 * @return PID of the UNIX process
+	 */
+	public static int getPID(Process process) {
+		if(process.getClass().getName().equals("java.lang.UNIXProcess")) {
+			Field f = null;
+			int pid = 0;
+
+			try {
+				f = process.getClass().getDeclaredField("pid");
+			} catch (NoSuchFieldException | SecurityException e1) {
+				e1.printStackTrace();
+			}
+
+			f.setAccessible(true);
+			
+			try {
+				pid = f.getInt(process);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			return pid;
+		}
+		
+		return -1;
 	}
 }
