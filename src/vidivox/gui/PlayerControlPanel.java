@@ -43,6 +43,8 @@ public class PlayerControlPanel extends JPanel {
 		
 		this.add(Box.createRigidArea(new Dimension(0, 0)));
 		
+		// -------------------------- Browse Button --------------------------
+		
 		browseButton = new JButton("Browse");
 		browseButton.setMargin(new Insets(2,6,2,6));
 		browseButton.setToolTipText("Open video file");
@@ -55,7 +57,10 @@ public class PlayerControlPanel extends JPanel {
 			}
 		});
 		this.add(browseButton);
-
+		
+		
+		// -------------------------- Rewind Button --------------------------
+		
 		rewindButton = new JButton("<<");
 		rewindButton.setToolTipText("Rewind");
 		rewindButton.addActionListener(new ActionListener() {
@@ -66,6 +71,9 @@ public class PlayerControlPanel extends JPanel {
 		});
 		this.add(rewindButton);
 
+		
+		// -------------------------- Play/Pause Button --------------------------
+		
 		playButton = new JButton("▐ ▌");
 		playButton.setToolTipText("Play / Pause");
 		playButton.addActionListener(new ActionListener() {
@@ -80,7 +88,10 @@ public class PlayerControlPanel extends JPanel {
 			}
 		});
 		this.add(playButton);
-
+		
+		
+		// -------------------------- Fast-Forward Button --------------------------
+		
 		ffButton = new JButton(">>");
 		ffButton.setToolTipText("Fast-forward");
 		ffButton.addActionListener(new ActionListener() {
@@ -91,10 +102,13 @@ public class PlayerControlPanel extends JPanel {
 		});
 		this.add(ffButton);
 		
+		// Disable all player control buttons initially
 		enablePlayerControl(false);
 		
-		int defaultVolume = VidivoxGUI.vp.getDefaultVolume();
 		
+		// -------------------------- Volume Slider --------------------------
+		
+		int defaultVolume = VidivoxGUI.vp.getDefaultVolume();
 		volumeSlider = new JSlider(JSlider.VERTICAL, 0, 150, defaultVolume);
 		volumeSlider.setToolTipText(String.valueOf(defaultVolume));
 		volumeSlider.addMouseMotionListener(new MouseMotionAdapter() {
@@ -108,7 +122,10 @@ public class PlayerControlPanel extends JPanel {
 
 		final JPopupMenu volumeMenu = new JPopupMenu();
 		volumeMenu.add(volumeSlider);
-
+		
+		
+		// -------------------------- Volume Button --------------------------
+		
 		final JButton volumeButton = new JButton("Volume");
 		volumeButton.setMargin(new Insets(2,6,2,6));
 		volumeButton.setToolTipText("Player volume");
@@ -119,6 +136,9 @@ public class PlayerControlPanel extends JPanel {
 			}
 		});
 		this.add(volumeButton);
+		
+		
+		// -------------------------- Export Button --------------------------
 		
 		exportButton = new JButton("Export");
 		exportButton.setMargin(new Insets(2,6,2,6));
@@ -132,10 +152,7 @@ public class PlayerControlPanel extends JPanel {
 		});
 		this.add(exportButton);
 	}
-	
-	public int getVolumeSliderValue() {
-		return volumeSlider.getValue();
-	}
+
 	
 	// -------------------------- Status Manipulation Methods --------------------------
 	// This section of methods will set the Vidivox player into a certain status.
@@ -188,7 +205,8 @@ public class PlayerControlPanel extends JPanel {
 	}
 	
 	/**
-	 * 
+	 * Enables the export button only if the user has chosen a video file and the audio track
+	 * table is not empty.
 	 */
 	protected void enableExportButton() {
 		if(VidivoxGUI.vm.getChosenVideo() != null && VidivoxGUI.vm.getAudioListSize() != 0) {
