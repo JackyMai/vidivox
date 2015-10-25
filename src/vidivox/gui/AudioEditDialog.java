@@ -1,27 +1,20 @@
 package vidivox.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import vidivox.helper.GenericHelper;
 
 public class AudioEditDialog extends JDialog implements ActionListener, PropertyChangeListener {
-	private JPanel topPanel;
 	private JOptionPane editOptionPane;
 	private AudioScrollPanel audioScrollPanel;
 	private int[] selectedRows;
@@ -30,8 +23,8 @@ public class AudioEditDialog extends JDialog implements ActionListener, Property
 	private String cancelButton = "Cancel";
 	private String okButton = "OK";
 	
-	public AudioEditDialog(JFrame mainFrame, AudioScrollPanel audioScrollPane) {
-		this.audioScrollPanel = audioScrollPanel;
+	public AudioEditDialog(JFrame mainFrame, AudioScrollPanel asp) {
+		this.audioScrollPanel = asp;
 		this.selectedRows = audioScrollPanel.getSelectedRows();
 		
 		this.setLocationRelativeTo(mainFrame);
@@ -63,7 +56,7 @@ public class AudioEditDialog extends JDialog implements ActionListener, Property
 		});
 		
 		editTextField.addActionListener(this);
-		editTextField.addPropertyChangeListener(this);
+		editOptionPane.addPropertyChangeListener(this);
 	}
 
 	@Override
@@ -94,7 +87,20 @@ public class AudioEditDialog extends JDialog implements ActionListener, Property
 					for(int selected : selectedRows) {
 						audioScrollPanel.setModelValue(newTime, selected, 1);
 					}
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(this, 
+							"Sorry but \"" + newTime + "\" is not a valid insert time!\n"
+							+ "Please enter according to the (HH:)MM:SS format and make"
+							+ "the new time is between 00:00 and video length.",
+							"OK",
+							JOptionPane.ERROR_MESSAGE);
+					newTime = null;
+					editTextField.requestFocusInWindow();
 				}
+			} else {
+				newTime = null;
+				dispose();
 			}
 		}
 	}

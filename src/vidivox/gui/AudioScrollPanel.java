@@ -43,7 +43,7 @@ public class AudioScrollPanel extends JScrollPane {
 	
 	protected void setModelValue(String newValue, int row, int column) {
 		this.audioTrackModel.setValueAt(newValue, row, column);
-		VidivoxGUI.vm.setInsertTime(row, Integer.parseInt(newValue));
+		VidivoxGUI.vm.setInsertTime(row, TimeFormatter.stringToMilli(newValue));
 	}
 	
 	protected void removeSelectedRow(int row) {

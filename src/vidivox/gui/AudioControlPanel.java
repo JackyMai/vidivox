@@ -50,7 +50,7 @@ public class AudioControlPanel extends JPanel {
 		audioEditButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AudioEditDialog dialog = new AudioEditDialog(mainFrame);
+				AudioEditDialog dialog = new AudioEditDialog(mainFrame, audioScrollPanel);
 				dialog.pack();
 				dialog.setVisible(true);
 			}
