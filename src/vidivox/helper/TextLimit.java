@@ -4,8 +4,15 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-@SuppressWarnings("serial")
+/**
+ * This class will limit the JTextField input to a specified maximum length.
+ * Reference: http://www.java2s.com/Tutorial/Java/0240__Swing/LimitJTextFieldinputtoamaximumlength.htm
+ * 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class TextLimit extends PlainDocument {
+	private static final long serialVersionUID = 1L;
 	private int limit;
 	
 	public TextLimit(int limit) {

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import vidivox.filechooser.FileOpener;
 import vidivox.model.AudioTrack;
 
+
 public class AudioControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +50,9 @@ public class AudioControlPanel extends JPanel {
 		audioEditButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				AudioEditDialog dialog = new AudioEditDialog(mainFrame);
+				dialog.pack();
+				dialog.setVisible(true);
 			}
 		});
 		removeButtonStyle(audioEditButton);
@@ -76,9 +79,5 @@ public class AudioControlPanel extends JPanel {
 		button.setBorderPainted(false);
 		button.setContentAreaFilled(false);
 		button.setOpaque(false);
-	}
-	
-	protected void audioEditWindow() {
-		
 	}
 }

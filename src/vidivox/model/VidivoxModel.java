@@ -51,6 +51,10 @@ public class VidivoxModel {
 		audioList.add(newAudio);
 	}
 	
+	public void setInsertTime(int index, int newTime) {
+		audioList.get(index).setInsertTime(newTime);
+	}
+	
 	public void removeAudioTrack(int index) {
 		audioList.remove(index);
 	}

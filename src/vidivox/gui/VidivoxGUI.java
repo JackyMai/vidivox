@@ -113,8 +113,7 @@ public class VidivoxGUI extends JFrame {
 			public void lengthChanged(MediaPlayer player, long newTime) {
 				progressPanel.setMaxSliderValue((int) newTime);
 				
-				String videoLength = TimeFormatter.formatLength(newTime);
-				vp.setVideoLength(videoLength);
+				vp.setVideoDuration((int)newTime);
 			}
 			
 			@Override

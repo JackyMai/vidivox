@@ -41,6 +41,11 @@ public class AudioScrollPanel extends JScrollPane {
 		return audioTrackTable.getSelectedRows();
 	}
 	
+	protected void setModelValue(String newValue, int row, int column) {
+		this.audioTrackModel.setValueAt(newValue, row, column);
+		VidivoxGUI.vm.setInsertTime(row, Integer.parseInt(newValue));
+	}
+	
 	protected void removeSelectedRow(int row) {
 		audioTrackModel.removeRow(row);
 	}

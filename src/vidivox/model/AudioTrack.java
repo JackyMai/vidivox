@@ -26,4 +26,8 @@ public class AudioTrack {
 	public int getInsertTime() {
 		return insertTime;
 	}
+	
+	public void setInsertTime(int newTime) {
+		this.insertTime = newTime;
+	}
 }

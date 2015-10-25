@@ -4,6 +4,7 @@ import java.io.File;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import vidivox.helper.TimeFormatter;
 
 /*
  * This class deals with the player/playerComponent and logic associated with the player. 
@@ -16,6 +17,7 @@ public class VidivoxPlayer {
 	private final EmbeddedMediaPlayerComponent playerComponent;
 	protected EmbeddedMediaPlayer player;
 	private String videoLength = "00:00";
+	private int videoDuration = 0;
 	private int defaultVolume = 100;
 	private static int videoPaused = 0;
 	private int skipDirection = 0;
@@ -76,6 +78,15 @@ public class VidivoxPlayer {
 		this.videoLength = videoLength;
 	}
 
+	public int getVideoDuration() {
+		return videoDuration;
+	}
+	
+	public void setVideoDuration(int videoDuration) {
+		this.videoDuration = videoDuration;
+		setVideoLength(TimeFormatter.formatLength(videoDuration));
+	}
+	
 	public long getCurrentTime() {
 		return player.getTime();
 	}

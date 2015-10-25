@@ -41,7 +41,7 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 			cmd += "-i '" + audioList[i] + "' ";
 		}
 		
-		cmd += "-filter_complex 'amix=inputs=" + (audioList.length+1) + "' '" + outputName + "'";
+		cmd += "-filter_complex \"amix=inputs=" + (audioList.length+1) + "\" \"-shortest\" '" + outputName + "'";
 		
 		System.out.println(cmd);
 
@@ -76,7 +76,7 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	}
 	
 	private void deleteTemp() {
-		File vidiTemp = new File(desiredName.getParent() + File.separator + "vidiTemp_JH.avi");
+		File vidiTemp = new File(desiredName.getParent() + File.separator + "vidivoxTemp.avi");
 		
 		if(vidiTemp.exists()) {
 			vidiTemp.delete();
