@@ -153,7 +153,7 @@ public class VidivoxGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				long currentTime = vp.getPlayer().getTime();
 				
-				progressPanel.setProgressLabel(TimeFormatter.formatLength(currentTime) + " / " + vp.getVideoLength());
+				progressPanel.setProgressLabel(TimeFormatter.milliToString(currentTime) + " / " + vp.getVideoLength());
 				progressPanel.setSliderValue((int) vp.getCurrentTime());
 			}
 		});

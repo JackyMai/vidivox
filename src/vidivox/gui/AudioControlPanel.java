@@ -27,6 +27,9 @@ public class AudioControlPanel extends JPanel {
 		gbc.gridx = 0;
 		gbc.gridy = GridBagConstraints.RELATIVE;
 		
+		
+		// ------------------------------ Audio Add Button ------------------------------
+		
 		JButton audioAddButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "add.png"));
 		audioAddButton.setToolTipText("Add new audio tracks");
 		audioAddButton.addActionListener(new ActionListener() {
@@ -54,12 +57,14 @@ public class AudioControlPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AudioEditDialog dialog = new AudioEditDialog(mainFrame, audioScrollPanel);
-				dialog.pack();
 				dialog.setVisible(true);
 			}
 		});
 		removeButtonStyle(audioEditButton);
 		this.add(audioEditButton, gbc);
+		
+		
+		// ------------------------------ Audio Remove Button ------------------------------
 		
 		JButton audioRemoveButton = new JButton(new ImageIcon("src" + File.separator + "icons" + File.separator + "delete.png"));
 		audioRemoveButton.setToolTipText("Remove selected audio tracks");

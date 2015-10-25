@@ -84,7 +84,7 @@ public class VidivoxPlayer {
 	
 	public void setVideoDuration(int videoDuration) {
 		this.videoDuration = videoDuration;
-		setVideoLength(TimeFormatter.formatLength(videoDuration));
+		setVideoLength(TimeFormatter.milliToString(videoDuration));
 	}
 	
 	public long getCurrentTime() {

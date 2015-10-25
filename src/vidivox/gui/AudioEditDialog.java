@@ -23,6 +23,7 @@ import vidivox.helper.GenericHelper;
  * Partner: Helen Zhao - hzha587
  */
 public class AudioEditDialog extends JDialog implements ActionListener, PropertyChangeListener {
+	private static final long serialVersionUID = 1L;
 	private JOptionPane editOptionPane;
 	private AudioScrollPanel audioScrollPanel;
 	private int[] selectedRows;

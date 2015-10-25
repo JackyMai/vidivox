@@ -34,7 +34,7 @@ public class AudioScrollPanel extends JScrollPane {
 	}
 	
 	protected void addAudioTrack(AudioTrack newTrack) {
-		audioTrackModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.formatLength(newTrack.getInsertTime())});
+		audioTrackModel.addRow(new Object[]{newTrack.getAudioName(), TimeFormatter.milliToString(newTrack.getInsertTime())});
 	}
 	
 	protected int[] getSelectedRows() {
