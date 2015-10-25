@@ -9,7 +9,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import vidivox.gui.VidivoxGUI;
 
 /* 
- * Main: This class acts as an entry point and initializes the program 
+ * This class acts as an entry point and initialises the Vidivox program.
  * 
  * Authors: Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
