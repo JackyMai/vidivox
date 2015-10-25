@@ -61,8 +61,8 @@ public class VidivoxGUI extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				String buttons[] = {"Yes", "No"};
-				int returnValue = JOptionPane.showOptionDialog(mainFrame, "Are you sure that you want to exist Vidivox?\n"
-						+ "All comments will need to be re-added.",
+				int returnValue = JOptionPane.showOptionDialog(mainFrame, "Are you sure that you want to exit Vidivox?\n"
+						+ "Existing audio tracks will need to be re-added.",
 						"WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 						null, buttons, buttons[1]);
 				 

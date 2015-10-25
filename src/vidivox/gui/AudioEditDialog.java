@@ -97,7 +97,7 @@ public class AudioEditDialog extends JDialog implements ActionListener, Property
 			
 			Object value = editOptionPane.getValue();
 			if(value == JOptionPane.UNINITIALIZED_VALUE) {
-				// Ignore because alue is still uninitialized.
+				// Ignore because value is still uninitialised.
 				return;
 			}
 			

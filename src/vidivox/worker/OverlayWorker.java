@@ -1,10 +1,10 @@
 package vidivox.worker;
 import java.io.File;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import vidivox.gui.ExportDialog;
 import vidivox.gui.VidivoxGUI;
 
 /**
@@ -17,13 +17,14 @@ import vidivox.gui.VidivoxGUI;
  * Partner: Helen Zhao - hzha587
  */
 public class OverlayWorker extends SwingWorker<Void, Void> {
+	private ExportDialog exportDialog;
 	private String[] audioList;
 	private String videoPath;
 	private String outputName;
 	private File desiredName;
-	private JDialog jd;
 	
-	public OverlayWorker(String videoPath, String[] audioList, File desiredName) {
+	public OverlayWorker(ExportDialog exportDialog, String videoPath, String[] audioList, File desiredName) {
+		this.exportDialog = exportDialog;
 		this.videoPath = videoPath;
 		this.audioList = audioList;
 		this.desiredName = desiredName;
@@ -31,7 +32,6 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
-		createInfoDialog();
 		
 		outputName = desiredName.getAbsolutePath();
 
@@ -54,28 +54,22 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected void done() {
-		jd.dispose();
+		exportDialog.dispose();
 		
-		deleteTemp();
+		deleteOriginal();
 		
-		int returnValue = JOptionPane.showConfirmDialog(VidivoxGUI.vp.getPlayerComponent(), "Successfully save as \"" + outputName + "\"\n"
-				+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
-		
-		if(returnValue == JOptionPane.YES_OPTION) {
-			VidivoxGUI.vm.setChosenVideo(new File (outputName));
-			VidivoxGUI.vp.playVideo(new File(outputName));
+		if(!this.isCancelled()) {
+			int returnValue = JOptionPane.showConfirmDialog(exportDialog.getParent(), "Successfully save as \"" + outputName + "\"\n"
+					+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
+			
+			if(returnValue == JOptionPane.YES_OPTION) {
+				VidivoxGUI.vm.setChosenVideo(new File (outputName));
+				VidivoxGUI.vp.playVideo(new File(outputName));
+			}
 		}
 	}
 	
-	private void createInfoDialog() {
-		JOptionPane jop = new JOptionPane("Exporting the video as requested", 
-				JOptionPane.INFORMATION_MESSAGE);
-		jd = jop.createDialog(VidivoxGUI.vp.getPlayerComponent(), "Overlay Operation");
-		jd.setModal(false);
-		jd.setVisible(true);
-	}
-	
-	private void deleteTemp() {
+	private void deleteOriginal() {
 		File vidiTemp = new File(desiredName.getParent() + File.separator + "vidivoxTemp.avi");
 		
 		if(vidiTemp.exists()) {

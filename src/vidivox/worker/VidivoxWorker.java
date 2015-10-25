@@ -5,9 +5,10 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
-import vidivox.gui.VidivoxGUI;
+import vidivox.gui.ExportDialog;
 import vidivox.model.AudioTrack;
 
 public class VidivoxWorker {
@@ -21,16 +22,15 @@ public class VidivoxWorker {
 		fw.execute();
 	}
 	
-	public static void export(final String videoPath, final ArrayList<AudioTrack> audioList, final File desiredName) {
+	public static void export(final JFrame mainFrame, final String videoPath, final ArrayList<AudioTrack> audioList, final File desiredName) {
 		DelayWorker dw = new DelayWorker(audioList);
 		dw.execute();
 		dw.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
 				if("state" == e.getPropertyName() && SwingWorker.StateValue.DONE == e.getNewValue()) {
-					String[] audioPath = VidivoxGUI.vm.getDelayedAudioList();
-					OverlayWorker ow = new OverlayWorker(videoPath, audioPath, desiredName);
-					ow.execute();
+					ExportDialog exportDialog = new ExportDialog(mainFrame, videoPath, desiredName);
+					exportDialog.setVisible(true);
 				}
 			}
 		});

@@ -46,7 +46,7 @@ public class FileSaver extends FileChooser {
 					String videoPath = VidivoxGUI.vm.getChosenVideoPath();
 					ArrayList<AudioTrack> audioList = VidivoxGUI.vm.getAudioList();
 					
-					VidivoxWorker.export(videoPath, audioList, desiredName);
+					VidivoxWorker.export(mainFrame, videoPath, audioList, desiredName);
 				} else {
 					VidivoxWorker.saveMp3File(message, desiredName);
 				}
