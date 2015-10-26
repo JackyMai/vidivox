@@ -101,6 +101,10 @@ public class AudioScrollPanel extends JScrollPane {
 		audioTrackModel.removeRow(row);
 	}
 	
+	/**
+	 * Stores the AudioControlPanel as a field which is necessary for the ListSelectionListener.
+	 * @param audioControlPanel - a JPanel that has all the control buttons for the audio tracks
+	 */
 	protected void getAudioControlPanel(final AudioControlPanel audioControlPanel) {
 		this.audioControlPanel = audioControlPanel;
 	}

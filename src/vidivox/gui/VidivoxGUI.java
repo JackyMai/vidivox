@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 
 /**
  * This class deals with the GUI aspect of the entire Vidivox program.
- * But rather than showing all the details it only describes the main structure
- * and layout of the various panels.
+ * But rather than showing all the details it only describes the main
+ * structure and layout of the various panels.
  * 
- * Authors Jacky Mai - jmai871
+ * Author: Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
  */
 public class VidivoxGUI extends JFrame {

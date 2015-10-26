@@ -119,7 +119,8 @@ public class PlayerControlPanel extends JPanel {
 				volumeSlider.setToolTipText(String.valueOf(volume));
 			}
 		});
-
+		
+		// Adding the volume slider as a menu item in the popup menu
 		final JPopupMenu volumeMenu = new JPopupMenu();
 		volumeMenu.add(volumeSlider);
 		

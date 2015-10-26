@@ -38,11 +38,12 @@ public class VidivoxWorker {
 	}
 	
 	/**
-	 * Starts the export operation by first 
-	 * @param mainFrame
-	 * @param videoPath
-	 * @param audioList
-	 * @param desiredName
+	 * Creates a JDialog which starts the export operation and informs the user
+	 * that the operation is taking place.
+	 * @param mainFrame - the parent component for the JDialog to appear at
+	 * @param videoPath - the absolute path of the chosen video to merge with
+	 * @param audioList - an array list containing all AudiOTrack objects that will be merged
+	 * @param desiredName - a File containing the desired output name and destination
 	 */
 	public static void export(JFrame mainFrame, String videoPath, ArrayList<AudioTrack> audioList, File desiredName) {
 		ExportDialog exportDialog = new ExportDialog(mainFrame, videoPath, audioList, desiredName);

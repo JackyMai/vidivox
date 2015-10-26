@@ -42,6 +42,8 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 		dw.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
+				// If the DelayWorker enters the done state and it's not because it got cancelled,
+				// then instantiate a new OverlayWorker and execute it
 				if("state" == e.getPropertyName() && SwingWorker.StateValue.DONE == e.getNewValue()) {
 					if(!dw.isCancelled()) {
 						String[] audioPath = VidivoxGUI.vm.getDelayedAudioList();
@@ -103,9 +105,10 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 				return;
 			}
 			
-			// If the cancel button is pressed, cancel the dw worker and 
+			// If the cancel button is pressed, cancel the delay worker and 
 			// overlay worker and dispose the window.
 			if(cancelButton.equals(value)) {
+				// Only cancel the overlay worker if the delay worker can be cancelled
 				if(!dw.cancel(true)){
 					ow.cancel(true);
 				}

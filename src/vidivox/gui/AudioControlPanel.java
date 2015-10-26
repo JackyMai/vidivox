@@ -15,7 +15,11 @@ import javax.swing.JPanel;
 import vidivox.filechooser.FileOpener;
 import vidivox.model.AudioTrack;
 
-
+/**
+ * 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class AudioControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton audioEditButton;

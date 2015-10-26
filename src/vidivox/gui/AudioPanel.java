@@ -10,6 +10,11 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+/**
+ * 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class AudioPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private AudioControlPanel audioControlPanel;

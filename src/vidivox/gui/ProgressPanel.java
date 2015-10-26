@@ -14,6 +14,11 @@ import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.metal.MetalSliderUI;
 
+/**
+ * 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class ProgressPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel progressLabel;

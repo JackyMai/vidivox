@@ -23,8 +23,8 @@ import vidivox.worker.VidivoxWorker;
 
 /**
  * This class contains a JPanel 
- * @author jacky
- *
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
  */
 public class AudioCommentPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

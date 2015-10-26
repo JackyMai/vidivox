@@ -8,6 +8,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
+/**
+ * This class includes a JPanel 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class StatusPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel playerStatusLabel ;
