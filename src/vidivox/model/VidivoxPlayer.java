@@ -7,7 +7,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import vidivox.helper.TimeFormatter;
 
 /*
- * This class deals with the player/playerComponent and logic associated with the player. 
+ * This class deals with the player/playerComponent and logic 
+ * associated with the video player. 
  * 
  * Authors: Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
@@ -30,37 +31,51 @@ public class VidivoxPlayer {
 
 	
 	// ------------------- Video logic manipulation methods --------------------
-
+	/**
+	 * Tells the video player to start playing normally
+	 */
 	public void play() {
 		videoPaused = 0;
 		player.mute(false);
 		player.play();
 	}
 
+	/**
+	 * Tells the video player to pause
+	 */
 	public void pause() {
 		videoPaused = 1;
 		player.pause();
 	}
 
+	/**
+	 * Tells the player to reset
+	 */
 	public void stop() {
 		videoPaused = 1;
 		player.stop();
 	}
 	
+	/**
+	 * Tells the player to start skipping in the direction specified
+	 */
 	public void skip(int direction) {
 		videoPaused = 2;
 		skipDirection = direction;
 		player.mute(true);
 	}
 
+	/**
+	 * Tells the player to play the chosen video file
+	 */
 	public void playVideo(File chosenVideo) {
 		videoPaused = 0;
 		player.playMedia(chosenVideo.getAbsolutePath());
 	}
 
 	
-	// ----------------------- Getters and setters -----------------------
-	// Getters are public, setters are package visibility
+	// -------------------------- Getters and setters --------------------------
+	// Generic getters and setters for the video player
 
 	public EmbeddedMediaPlayerComponent getPlayerComponent() {
 		return playerComponent;

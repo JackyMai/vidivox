@@ -4,6 +4,8 @@ public class TimeFormatter {
 	/**
 	 * This method takes a long number video length and converts
 	 * it into a readable string in the format (HH:)MM:SS.
+	 * @param videoLength - length of a video file in millisecond
+	 * @return A readable string in either the HH:MM:SS or MM:SS format
 	 */
 	public static String milliToString(long videoLength) {
 		int totalLength = (int) videoLength / 1000;
@@ -23,8 +25,8 @@ public class TimeFormatter {
 	/**
 	 * This method takes a time string in the format (HH:)MM:SS and
 	 * converts it to an integer value in the millisecond unit.
-	 * @param time
-	 * @return
+	 * @param time - the formatted string in the (HH:)MM:SS format
+	 * @return An integer in milliseconds from the time format
 	 */
 	public static int stringToMilli(String time) {
 		// Split the time string by ":" to decide whether the string
