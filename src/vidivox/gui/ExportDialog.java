@@ -1,5 +1,6 @@
 package vidivox.gui;
 
+import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -34,6 +35,8 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 	private OverlayWorker ow;
 	
 	public ExportDialog(JFrame mainFrame, final String videoPath, ArrayList<AudioTrack> audioList, final File desiredName) {
+		this.setBackground(Color.decode("#F3F3F3"));
+		
 		// Instantiates a DelayWorker to start the audio delay operation.
 		// Once the DelayWorker finishes uninterrupted, an OverlayWorker will be created
 		// to start the actual export operation.

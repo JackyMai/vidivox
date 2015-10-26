@@ -1,5 +1,6 @@
 package vidivox.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -36,6 +37,7 @@ public class AudioEditDialog extends JDialog implements ActionListener, Property
 		// Storing the input arguments as global variables
 		this.audioScrollPanel = asp;
 		this.selectedRows = audioScrollPanel.getSelectedRows();
+		this.setBackground(Color.decode("#F3F3F3"));
 
 		// Setting up the instructions to help the user to enter the correct insert time
 		String message = "Please enter a new insert time for the audio tracks";

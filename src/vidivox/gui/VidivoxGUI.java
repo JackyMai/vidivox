@@ -1,6 +1,7 @@
 package vidivox.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
@@ -51,6 +52,7 @@ public class VidivoxGUI extends JFrame {
 		setSize(vidivoxDim);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		setBackground(Color.decode("#F3F3F3"));
 		
 		/*
 		 * Adds a WindowListener to the JFrame.

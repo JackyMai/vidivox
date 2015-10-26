@@ -24,7 +24,7 @@ public class StatusPanel extends JPanel {
 	private JLabel chosenAudioLabel;
 	
 	public StatusPanel(JFrame mainFrame) {
-		this.setBackground(Color.decode("#F2F1F0"));
+		this.setBackground(Color.decode("#F3F3F3"));
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 3));
 
 		// -------------------------- Player Status Label --------------------------

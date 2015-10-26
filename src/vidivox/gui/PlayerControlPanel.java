@@ -1,5 +1,6 @@
 package vidivox.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -39,6 +40,7 @@ public class PlayerControlPanel extends JPanel {
 	
 	public PlayerControlPanel(final JFrame mainFrame, StatusPanel statusPanel) {
 		this.statusPanel = statusPanel;
+		this.setBackground(Color.decode("#F3F3F3"));
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 3));
 		
 		this.add(Box.createRigidArea(new Dimension(0, 0)));

@@ -38,7 +38,7 @@ public class AudioCommentPanel extends JPanel implements ActionListener {
 	private FestivalWorker fw;
 	
 	public AudioCommentPanel(final JFrame mainFrame) {
-		this.setBackground(Color.decode("#F2F1F0"));
+		this.setBackground(Color.decode("#F3F3F3"));
 		this.setBorder(new EmptyBorder(0, 0, 3, 2));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		

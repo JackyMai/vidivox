@@ -1,5 +1,6 @@
 package vidivox.gui;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -25,8 +26,9 @@ public class AudioPanel extends JPanel {
 	private AudioScrollPanel audioScrollPanel = new AudioScrollPanel();
 	
 	public AudioPanel(JFrame mainFrame, StatusPanel statusPanel, PlayerControlPanel playerControlPanel) {
-		this.setLayout(new GridBagLayout());
+		this.setBackground(Color.decode("#F3F3F3"));
 		this.setBorder(new CompoundBorder(new EmptyBorder(2, 10, 2, 10), new TitledBorder("Audio Tracks")));
+		this.setLayout(new GridBagLayout());
 		
 		// Setting up the GridBagConstraints to format the JPanel
 		GridBagConstraints gbc = new GridBagConstraints();

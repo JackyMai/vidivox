@@ -1,5 +1,6 @@
 package vidivox.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
@@ -26,6 +27,8 @@ public class AudioScrollPanel extends JScrollPane {
 	
 	@SuppressWarnings("serial")
 	public AudioScrollPanel() {
+		this.setBackground(Color.decode("#F3F3F3"));
+		
 		// Instantiates the table model and overrides the method to make it not editable.
 		audioTrackModel = new DefaultTableModel() {
 			@Override

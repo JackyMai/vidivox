@@ -27,7 +27,7 @@ public class ProgressPanel extends JPanel {
 	private JSlider videoSlider;
 	
 	public ProgressPanel(JFrame mainFrame) {
-		this.setBackground(Color.decode("#F2F1F0"));
+		this.setBackground(Color.decode("#F3F3F3"));
 		this.setBorder(new EmptyBorder(6, 10, 3, 6));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
