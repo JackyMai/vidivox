@@ -9,6 +9,13 @@ import javax.swing.SwingWorker;
 import vidivox.gui.VidivoxGUI;
 import vidivox.model.AudioTrack;
 
+/**
+ * This class is a SwingWorker that will generate a delayed version
+ * of the audio track for every AudioTrack objects in the ArrayList.
+ * 
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
+ */
 public class DelayWorker extends SwingWorker<String[], Void> {
 	private ArrayList<AudioTrack> audioList;
 	
@@ -18,6 +25,7 @@ public class DelayWorker extends SwingWorker<String[], Void> {
 	
 	@Override
 	protected String[] doInBackground() throws Exception {
+		// Create a string array the same size as the audioList ArrayList
 		String[] delayedAudioList = new String[audioList.size()];
 		
 		// Loop through every single AudioTrack objects in the ArrayList and create a temporary copy of the
@@ -50,6 +58,8 @@ public class DelayWorker extends SwingWorker<String[], Void> {
 		return delayedAudioList;
 	}
 	
+	// After all the delay operations have finished, set the delayed audio list in
+	// the Vidivox model to prepare for the merge operation.
 	protected void done() {
 		try {
 			VidivoxGUI.vm.setDelayedAudioList(get());

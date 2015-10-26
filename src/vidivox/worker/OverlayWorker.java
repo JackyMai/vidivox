@@ -10,10 +10,9 @@ import vidivox.gui.VidivoxGUI;
 import vidivox.helper.GenericHelper;
 
 /**
- * OverlayWorker: This class is a SwingWorker that overlays an audio file 
- * onto the audio of a video file and saves the overlaid video as outputName.
- * 
- * Inputs: String videoName, String audioName, String outputName.
+ * This class is a SwingWorker that overlays the audio tracks added by the user
+ * onto the video file at the specified insert times and saves the overlaid video
+ * as an output.
  * 
  * Author: Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
@@ -37,20 +36,23 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	@Override
 	protected Void doInBackground() throws Exception {
 		outputName = desiredName.getAbsolutePath();
-
+		
+		// Start concatenating the ffmpeg command for merging the audio files with the video file.
 		String cmd = "ffmpeg -i '" + videoPath + "' ";
 		
+		// Loop through the entire audio list and concatenate the absolute path of the
+		// audio files onto the ffmpeg command.
 		for(int i=0; i<audioList.length; i++) {
 			cmd += "-i '" + audioList[i] + "' ";
 		}
 		
+		// Final concatenation for specifying the number of inputs and the output absolute path.
 		cmd += "-filter_complex \"amix=inputs=" + (audioList.length+1) + "\" \"-shortest\" '" + outputName + "'";
-		
-		System.out.println(cmd);
 
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		process = builder.start();
 		
+		// Obtain the PID of the process in case the user decides to cancel it.
 		PID = GenericHelper.getPID(process);
 		
 		process.waitFor();
@@ -62,8 +64,12 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 	protected void done() {
 		exportDialog.dispose();
 		
+		// Deletes the temporary video and audio files if it exists
 		deleteOriginal();
+		deleteMp3Temp();
 		
+		// If the user has cancelled the export operation, kill the ffmpeg process and
+		// remove the unfinished video file.
 		if(this.isCancelled()) {
 			String kill = "kill " + PID;
 			ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", kill);
@@ -76,8 +82,13 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 			
 			deleteUnfinished();
 		} else {
-			int returnValue = JOptionPane.showConfirmDialog(exportDialog.getParent(), "Successfully save as \"" + outputName + "\"\n"
-					+ "Would you like to play the saved video?", "Export Complete", JOptionPane.YES_NO_OPTION);
+			// If the export operation finished normally then ask the user whether they
+			// would like to play the exported video.
+			int returnValue = JOptionPane.showConfirmDialog(exportDialog.getParent(), 
+					"Successfully save as \"" + outputName + "\"\n"
+					+ "Would you like to play the exported video?",
+					"Export Complete",
+					JOptionPane.YES_NO_OPTION);
 			
 			if(returnValue == JOptionPane.YES_OPTION) {
 				VidivoxGUI.vm.setChosenVideo(new File (outputName));
@@ -86,6 +97,11 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		}
 	}
 	
+	/**
+	 * Deletes the vidivoxTemp.avi file which is renamed from the original chosen video
+	 * when the user decides to overwrite the source video used for the export operation.
+	 * Example: current video = helloworld.avi, audio track = hi.mp3, output = helloworld.avi.
+	 */
 	private void deleteOriginal() {
 		File vidiTemp = new File(desiredName.getParent() + File.separator + "vidivoxTemp.avi");
 		
@@ -94,9 +110,19 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		}
 	}
 	
+	/**
+	 * Deletes the unfinished video file when the user cancels the export operation midway.
+	 */
 	private void deleteUnfinished() {
 		if(desiredName.exists()) {
 			desiredName.delete();
+		}
+	}
+	
+	private void deleteMp3Temp() {
+		File tempDir = new File("vidivox" + File.separator + ".temp");
+		for(File mp3 : tempDir.listFiles()) {
+			mp3.delete();
 		}
 	}
 	

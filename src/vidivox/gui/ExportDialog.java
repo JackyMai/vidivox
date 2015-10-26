@@ -34,8 +34,8 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 		ow.execute();
 		
 		// Setting up the instructions to help the user to enter the correct insert time
-		String message = "Exporting " + desiredName.getName() + " as requsted.";
-		String message2 = "Please give it moment, this shouldn't take long.";
+		String message = "Exporting as \"" + desiredName.getName() + "\" as requsted.";
+		String message2 = "Please give it moment.";
 		
 		progressBar.setIndeterminate(true);
 		

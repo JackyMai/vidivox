@@ -1,16 +1,14 @@
 package vidivox.worker;
+
 import javax.swing.SwingWorker;
 
-/* 
- * FestivalWorker: This class is a SwingWorker that takes a string message 
+/**
+ * This class is a SwingWorker that takes a string message 
  * and plays it via a festival BASH call
  * 
- * Inputs: String message
- * 
- * Authors: Helen Zhao, Jacky Mai
- * UPI: hzha587, jmai871
+ * Author: Jacky Mai - jmai871
+ * Partner: Helen Zhao - hzha587
  */
-
 public class FestivalWorker extends SwingWorker<Void, Void> {
 	private String message;
 	
@@ -20,11 +18,11 @@ public class FestivalWorker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
+		// Creates a process to make festival speak the message provided
 		String cmd = "echo '" + message + "' | festival --tts";
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		builder.start();
 		
 		return null;
 	}
-
 }

@@ -44,6 +44,7 @@ public class AudioCommentPanel extends JPanel {
 		
 		festTextField = new JTextField();
 		festTextField.setDocument(new TextLimit(140));
+		festTextField.setText("There is a 140 character limit");
 		festTextField.addActionListener(commentPlayAction);
 		festTextField.setMaximumSize(new Dimension(Integer.MAX_VALUE, festTextField.getPreferredSize().height));
 		festTextField.addKeyListener(new KeyAdapter() {

@@ -134,6 +134,7 @@ public class VidivoxGUI extends JFrame {
 			@Override
 			public void opening(MediaPlayer player) {
 				statusPanel.setChosenVideoLabel("Video: " + vm.getChosenVideo().getName());
+				playerControlPanel.setPlayStatus();
 				playerControlPanel.enablePlayerControl(true);
 			}
 			
