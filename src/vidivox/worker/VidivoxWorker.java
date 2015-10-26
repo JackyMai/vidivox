@@ -1,9 +1,13 @@
 package vidivox.worker;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.SwingWorker;
 
 import vidivox.gui.ExportDialog;
 import vidivox.model.AudioTrack;
@@ -32,9 +36,20 @@ public class VidivoxWorker {
 	 * using the voice of Festival.
 	 * @param text - a string containing the text you want Festival to speak
 	 */
-	public static void festival(String text) {
-		FestivalWorker fw = new FestivalWorker(text);
+	public static FestivalWorker festival(String text, final JButton playButton) {
+		final FestivalWorker fw = new FestivalWorker(text);
 		fw.execute();
+		fw.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				// If the FestivalWorker enters the done state then change the button text back to "Play"
+				if("state" == e.getPropertyName() && SwingWorker.StateValue.DONE == e.getNewValue()) {
+					playButton.setText("Play");
+				}
+			}
+		});
+		
+		return fw;
 	}
 	
 	/**

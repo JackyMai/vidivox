@@ -15,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 /**
+ * This class is a JPanel that contains the progress label and video
+ * slider for the player component.
  * 
  * Author: Jacky Mai - jmai871
  * Partner: Helen Zhao - hzha587
