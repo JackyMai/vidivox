@@ -21,6 +21,11 @@ import vidivox.filechooser.FileSaver;
 import vidivox.helper.TextLimit;
 import vidivox.worker.VidivoxWorker;
 
+/**
+ * This class contains a JPanel 
+ * @author jacky
+ *
+ */
 public class AudioCommentPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTextField festTextField;
@@ -71,7 +76,6 @@ public class AudioCommentPanel extends JPanel {
 		
 		saveButton = new JButton("Save");
 		saveButton.setMargin(new Insets(2, 6, 2, 6));
-		saveButton.setEnabled(false);
 		saveButton.setToolTipText("Save message as audio file");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

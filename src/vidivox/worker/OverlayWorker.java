@@ -66,7 +66,7 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 		
 		// Deletes the temporary video and audio files if it exists
 		deleteOriginal();
-		deleteMp3Temp();
+		GenericHelper.deleteMp3Temp();
 		
 		// If the user has cancelled the export operation, kill the ffmpeg process and
 		// remove the unfinished video file.
@@ -118,12 +118,4 @@ public class OverlayWorker extends SwingWorker<Void, Void> {
 			desiredName.delete();
 		}
 	}
-	
-	private void deleteMp3Temp() {
-		File tempDir = new File("vidivox" + File.separator + ".temp");
-		for(File mp3 : tempDir.listFiles()) {
-			mp3.delete();
-		}
-	}
-	
 }

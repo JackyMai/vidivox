@@ -84,4 +84,14 @@ public class GenericHelper {
 		
 		return -1;
 	}
+	
+	/**
+	 * Deletes all temporary audio files in the vidivox directory
+	 */
+	public static void deleteMp3Temp() {
+		File tempDir = new File("vidivox" + File.separator + ".temp");
+		for(File mp3 : tempDir.listFiles()) {
+			mp3.delete();
+		}
+	}
 }

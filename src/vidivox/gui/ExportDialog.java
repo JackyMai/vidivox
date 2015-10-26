@@ -3,12 +3,16 @@ package vidivox.gui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 
+import vidivox.model.AudioTrack;
+import vidivox.worker.DelayWorker;
 import vidivox.worker.OverlayWorker;
 
 /**
@@ -22,16 +26,31 @@ import vidivox.worker.OverlayWorker;
  */
 public class ExportDialog extends JDialog implements PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
+	private ExportDialog exportDialog = this;
 	private JOptionPane exportOptionPane;
 	private JProgressBar progressBar = new JProgressBar(0, 100);
 	private String cancelButton = "Cancel";
+	private DelayWorker dw;
 	private OverlayWorker ow;
 	
-	public ExportDialog(JFrame mainFrame, String videoPath, File desiredName) {
-		// Instantiates an OverlayWorker to start the export operation.
-		String[] audioPath = VidivoxGUI.vm.getDelayedAudioList();
-		ow = new OverlayWorker(this, videoPath, audioPath, desiredName);
-		ow.execute();
+	public ExportDialog(JFrame mainFrame, final String videoPath, ArrayList<AudioTrack> audioList, final File desiredName) {
+		// Instantiates a DelayWorker to start the audio delay operation.
+		// Once the DelayWorker finishes uninterrupted, an OverlayWorker will be created
+		// to start the actual export operation.
+		dw = new DelayWorker(audioList);
+		dw.execute();
+		dw.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if("state" == e.getPropertyName() && SwingWorker.StateValue.DONE == e.getNewValue()) {
+					if(!dw.isCancelled()) {
+						String[] audioPath = VidivoxGUI.vm.getDelayedAudioList();
+						ow = new OverlayWorker(exportDialog, videoPath, audioPath, desiredName);
+						ow.execute();
+					}
+				}
+			}
+		});
 		
 		// Setting up the instructions to help the user to enter the correct insert time
 		String message = "Exporting as \"" + desiredName.getName() + "\" as requsted.";
@@ -84,10 +103,13 @@ public class ExportDialog extends JDialog implements PropertyChangeListener {
 				return;
 			}
 			
-			// If the cancel button is pressed, cancel the overlay worker
-			// and dispose the window.
+			// If the cancel button is pressed, cancel the dw worker and 
+			// overlay worker and dispose the window.
 			if(cancelButton.equals(value)) {
-				ow.cancel(true);
+				if(!dw.cancel(true)){
+					ow.cancel(true);
+				}
+
 				dispose();
 			}
 		}

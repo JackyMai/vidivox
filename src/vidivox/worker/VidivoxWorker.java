@@ -1,12 +1,9 @@
 package vidivox.worker;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.SwingWorker;
 
 import vidivox.gui.ExportDialog;
 import vidivox.model.AudioTrack;
@@ -40,17 +37,15 @@ public class VidivoxWorker {
 		fw.execute();
 	}
 	
-	public static void export(final JFrame mainFrame, final String videoPath, final ArrayList<AudioTrack> audioList, final File desiredName) {
-		DelayWorker dw = new DelayWorker(audioList);
-		dw.execute();
-		dw.addPropertyChangeListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent e) {
-				if("state" == e.getPropertyName() && SwingWorker.StateValue.DONE == e.getNewValue()) {
-					ExportDialog exportDialog = new ExportDialog(mainFrame, videoPath, desiredName);
-					exportDialog.setVisible(true);
-				}
-			}
-		});
+	/**
+	 * Starts the export operation by first 
+	 * @param mainFrame
+	 * @param videoPath
+	 * @param audioList
+	 * @param desiredName
+	 */
+	public static void export(JFrame mainFrame, String videoPath, ArrayList<AudioTrack> audioList, File desiredName) {
+		ExportDialog exportDialog = new ExportDialog(mainFrame, videoPath, audioList, desiredName);
+		exportDialog.setVisible(true);
 	}
 }

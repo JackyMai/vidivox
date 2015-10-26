@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import vidivox.gui.VidivoxGUI;
+import vidivox.helper.GenericHelper;
 import vidivox.model.AudioTrack;
 
 /**
@@ -61,10 +62,14 @@ public class DelayWorker extends SwingWorker<String[], Void> {
 	// After all the delay operations have finished, set the delayed audio list in
 	// the Vidivox model to prepare for the merge operation.
 	protected void done() {
-		try {
-			VidivoxGUI.vm.setDelayedAudioList(get());
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+		if(this.isCancelled()) {
+			GenericHelper.deleteMp3Temp();
+		} else {
+			try {
+				VidivoxGUI.vm.setDelayedAudioList(get());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

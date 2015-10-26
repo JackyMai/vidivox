@@ -131,8 +131,8 @@ public class PlayerControlPanel extends JPanel {
 		volumeButton.setToolTipText("Player volume");
 		volumeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				volumeMenu.show(volumeButton, volumeButton.getBounds().x - 200,
-						volumeButton.getBounds().y - 215);
+				volumeMenu.show(volumeButton, volumeButton.getBounds().x - 220,
+						volumeButton.getBounds().y - 210);
 			}
 		});
 		this.add(volumeButton);
